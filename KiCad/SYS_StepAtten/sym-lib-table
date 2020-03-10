@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name OMRON_G6K-2F-Y-DC5)(type Legacy)(uri ${KIPRJMOD}/OMRON_G6K-2F-Y-DC5.lib)(options "")(descr ""))
+)
