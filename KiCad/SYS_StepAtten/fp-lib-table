@@ -1,0 +1,7 @@
+(fp_lib_table
+  (lib (name ALPS_SPUN191400)(type KiCad)(uri ${KIPRJMOD}/ALPS_SPUN191400.pretty)(options "")(descr ""))
+  (lib (name OMRON_G6K-2F-Y)(type KiCad)(uri ${KIPRJMOD}/OMRON_G6K-2F-Y.pretty)(options "")(descr ""))
+  (lib (name 3.5mm_RiserPCB)(type KiCad)(uri ${KIPRJMOD}/3.5mm_RiserPCB.pretty)(options "")(descr ""))
+  (lib (name RCJ-2121)(type KiCad)(uri ${KIPRJMOD}/RCJ-2121.pretty)(options "")(descr ""))
+  (lib (name RCA_KobiCon_161-4220-E)(type KiCad)(uri ${KIPRJMOD}/RCA_KobiCon_161-4220-E.pretty)(options "")(descr ""))
+)

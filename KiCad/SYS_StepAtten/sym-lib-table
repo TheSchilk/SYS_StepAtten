@@ -1,4 +1,5 @@
 (sym_lib_table
-  (lib (name OMRON_G6K-2F-Y-DC5)(type Legacy)(uri ${KIPRJMOD}/OMRON_G6K-2F-Y-DC5.lib)(options "")(descr ""))
+  (lib (name OMRON_G6K-2F-Y)(type Legacy)(uri ${KIPRJMOD}/OMRON_G6K-2F-Y.lib)(options "")(descr ""))
   (lib (name RCA_Stereo)(type Legacy)(uri ${KIPRJMOD}/RCA_Stereo.lib)(options "")(descr ""))
+  (lib (name 3.5mm_RiserPCB)(type Legacy)(uri ${KIPRJMOD}/3.5mm_RiserPCB/3.5mm_RiserPCB.lib)(options "")(descr ""))
 )
