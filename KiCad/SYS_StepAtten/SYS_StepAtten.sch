@@ -2905,17 +2905,6 @@ F 3 "~" H 9050 8750 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Connector_Generic:Conn_02x03_Counter_Clockwise J6
-U 1 1 66013D22
-P 4300 8350
-F 0 "J6" H 4350 8667 50  0000 C CNN
-F 1 "cfg jumper" H 4350 8576 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" H 4300 8350 50  0001 C CNN
-F 3 "~" H 4300 8350 50  0001 C CNN
-	1    4300 8350
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR0141
 U 1 1 66019BCA
 P 4000 8500
@@ -3982,4 +3971,15 @@ Wire Wire Line
 Connection ~ 1200 6750
 Wire Wire Line
 	1200 6750 1400 6750
+$Comp
+L Connector_Generic:Conn_02x03_Odd_Even J6
+U 1 1 5ED7C887
+P 4300 8350
+F 0 "J6" H 4350 8667 50  0000 C CNN
+F 1 "cfg jumper" H 4350 8576 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" H 4300 8350 50  0001 C CNN
+F 3 "~" H 4300 8350 50  0001 C CNN
+	1    4300 8350
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
