@@ -5,10 +5,10 @@ $Descr A3 16535 11693
 encoding utf-8
 Sheet 1 1
 Title "SYS - Step Attenuator"
-Date ""
-Rev "v0.0"
+Date "2020-04-08"
+Rev "proto v0.0"
 Comp "Philipp Schilk"
-Comment1 ""
+Comment1 "https://github.com/TheSchilk/SYS_StepAtten"
 Comment2 ""
 Comment3 ""
 Comment4 ""
