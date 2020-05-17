@@ -753,8 +753,6 @@ Connection ~ 7900 2400
 Wire Wire Line
 	14400 1900 14600 1900
 Wire Wire Line
-	14600 1900 14600 2250
-Wire Wire Line
 	14400 2700 14600 2700
 Wire Wire Line
 	14600 2700 14600 2550
@@ -820,8 +818,6 @@ F 3 "~" H 1150 10310 50  0001 C CNN
 	1    1100 10350
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	14600 2250 14950 2250
 Wire Wire Line
 	14750 2450 15350 2450
 Wire Wire Line
@@ -889,7 +885,6 @@ Wire Wire Line
 	15050 3400 14950 3400
 Wire Wire Line
 	14950 3400 14950 2250
-Connection ~ 14950 2250
 Wire Wire Line
 	14950 2250 15600 2250
 Wire Wire Line
@@ -2122,11 +2117,6 @@ Wire Wire Line
 	3000 3000 3800 3000
 Wire Wire Line
 	3000 2450 3800 2450
-Wire Wire Line
-	14600 2400 14600 2350
-Wire Wire Line
-	14600 2350 15050 2350
-Connection ~ 15050 2350
 Text Label 5100 1850 0    50   ~ 0
 RCA1_L
 Text Label 5100 1950 0    50   ~ 0
@@ -3080,7 +3070,7 @@ Wire Wire Line
 Connection ~ 12900 2400
 Connection ~ 13950 2400
 Wire Wire Line
-	13950 2400 14600 2400
+	13950 2400 14750 2400
 Wire Wire Line
 	13950 3200 12900 3200
 Connection ~ 13950 3200
@@ -3982,4 +3972,14 @@ F 3 "~" H 4300 8350 50  0001 C CNN
 	1    4300 8350
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	14750 2250 14950 2250
+Wire Wire Line
+	14750 2250 14750 2400
+Connection ~ 14950 2250
+Wire Wire Line
+	15050 2350 14600 2350
+Wire Wire Line
+	14600 1900 14600 2350
+Connection ~ 15050 2350
 $EndSCHEMATC
