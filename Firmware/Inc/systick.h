@@ -10,8 +10,13 @@
 
 #include <stm32f0xx.h>
 
+// Careful! Depends on SystemCoreClock from systen_stm32f0xx.c!
+#define SYSTICK_PERIOD_MS 1
+#define SYSTICK_RELOAD_VAL (SystemCoreClock / (SYSTICK_PERIOD_MS * 1000))
+
 void systick_init();
-void systick_irqHandler();
+void systick_delays();
+void systick_dlyms(uint32_t ms);
 
 uint32_t systick_mscount;
 

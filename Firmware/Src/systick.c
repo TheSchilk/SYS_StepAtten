@@ -24,8 +24,8 @@ void systick_init(){
 	NVIC_Init(&initnvic);
 
 	//Setup the reload value
-	//At 16Mhz SysClk this gives us an overflow every 1ms
-	SysTick -> LOAD = 16000;
+	//At 8Mhz SysClk this gives us an overflow every 1ms
+	SysTick -> LOAD = SYSTICK_RELOAD_VAL;
 
 	//Reset mscount variable
 	systick_mscount = 0;
@@ -34,9 +34,17 @@ void systick_init(){
 	SysTick -> CTRL |= SysTick_CTRL_ENABLE_Msk;
 }
 
-
-
-void systick_irqHandler(){
+//Called by the SysTick IRQ handler
+void systick_delays(){
 	systick_mscount++;
+}
+
+//Delays for a certain amount of milliseconds.
+//Only a delay of (ms-1) is guaranteed.
+void systick_dlyms(uint32_t ms){
+	uint32_t mscount_end = systick_mscount+ms;
+	while(systick_mscount != mscount_end){
+		asm("nop");
+	}
 }
 

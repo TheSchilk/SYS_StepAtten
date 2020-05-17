@@ -17,13 +17,13 @@ void adc_init(){
 	ADC_InitTypeDef adc_struct;
 	ADC_StructInit(&adc_struct);
 	adc_struct.ADC_Resolution = ADC_Resolution_12b;
-	adc_struct.ADC_ContinuousConvMode = DISABLE;
+	adc_struct.ADC_ContinuousConvMode = ENABLE;
 	adc_struct.ADC_DataAlign = ADC_DataAlign_Right;
 	adc_struct.ADC_ScanDirection = ADC_ScanDirection_Upward;
 
 	//Configure the two ADC Channels we are using
 	ADC_ChannelConfig(ADC1, AN_CH_POT,     ADC_SampleTime_7_5Cycles);
-	//ADC_ChannelConfig(ADC1, AN_CH_POT_EXT, ADC_SampleTime_7_5Cycles);
+	ADC_ChannelConfig(ADC1, AN_CH_POT_EXT, ADC_SampleTime_7_5Cycles);
 
 	//Setup DMA
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
@@ -33,31 +33,34 @@ void adc_init(){
 	initdma.DMA_DIR = DMA_DIR_PeripheralSRC;
 	initdma.DMA_M2M = DMA_M2M_Disable;
 	initdma.DMA_MemoryBaseAddr = (uint32_t) adc_dmabuf;
-	initdma.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;
+	initdma.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
 	initdma.DMA_MemoryInc = DMA_MemoryInc_Enable;
 	initdma.DMA_Mode = DMA_Mode_Circular;
 	initdma.DMA_PeripheralBaseAddr = (uint32_t) &ADC1->DR;
 	initdma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
 	initdma.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
 	initdma.DMA_Priority = DMA_Priority_High;
-	//DMA_Init(DMA1_Channel1,&initdma);
+	DMA_Init(DMA1_Channel1,&initdma);
+	DMA_Cmd(DMA1_Channel1, ENABLE);
 
-    //ADC_DMARequestModeConfig(ADC1, ADC_DMAMode_Circular);
-	//ADC_DMACmd(ADC1, ENABLE);
+    ADC_DMARequestModeConfig(ADC1, ADC_DMAMode_Circular);
+	ADC_DMACmd(ADC1, ENABLE);
 
-	//Fill buffers with 0xFFFFFFFF
+	// Fill buffer with 0xFFFF
+	// Indicates that no sample is present
 	for(int i = 0; i < ADC_DMABUF_LEN; i++){
-		adc_dmabuf[i] = 0xFFFFFFFF;
+		adc_dmabuf[i] = 0xFFFF;
 	}
-
-	//Turn on Continuous Mode
-	//ADC_ContinuousModeCmd(ADC1,ENABLE);
 
 	//Turn on ADC
 	ADC_Cmd(ADC1, ENABLE);
 
+	 // Wait until the ADC is ready
+	while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADRDY));
+
 	//Start Conversion
-	//ADC_StartOfConversion(ADC1);
+	ADC_ContinuousModeCmd(ADC1, ENABLE);
+	ADC_StartOfConversion(ADC1);
 }
 
 uint32_t adc_getPotVal(uint32_t use_external){
@@ -78,7 +81,7 @@ uint32_t adc_getPotVal(uint32_t use_external){
 	uint32_t sum = 0;
 	uint32_t count = 0;
 	for(int i = 0; i < ADC_DMABUF_LEN; i = i + 2){
-		if(adc_dmabuf[i+pot_select_offset] != 0xFFFFFFFF){
+		if(adc_dmabuf[i+pot_select_offset] != 0xFFFF){
 			sum += adc_dmabuf[i+pot_select_offset];
 			count++;
 		}
