@@ -603,36 +603,10 @@ Wire Wire Line
 	12950 2850 12900 2850
 Wire Wire Line
 	12900 2850 12900 2900
-$Comp
-L Device:R_Small R?
-U 1 1 5EA3E21B
-P 13950 2900
-F 0 "R?" H 13892 2854 50  0000 R CNN
-F 1 "10K" H 13892 2945 50  0000 R CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" H 13950 2900 50  0001 C CNN
-F 3 "~" H 13950 2900 50  0001 C CNN
-	1    13950 2900
-	1    0    0    1   
-$EndComp
 Wire Wire Line
 	14000 2750 13950 2750
 Wire Wire Line
-	13950 2750 13950 2800
-$Comp
-L Device:R_Small R?
-U 1 1 5EA43546
-P 13950 2100
-F 0 "R?" H 13892 2054 50  0000 R CNN
-F 1 "10K" H 13892 2145 50  0000 R CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" H 13950 2100 50  0001 C CNN
-F 3 "~" H 13950 2100 50  0001 C CNN
-	1    13950 2100
-	1    0    0    1   
-$EndComp
-Wire Wire Line
 	14000 1950 13950 1950
-Wire Wire Line
-	13950 1950 13950 2000
 Text Notes 9850 1250 0    100  ~ 0
 ATTENUATOR
 Text Notes 3800 1250 0    100  ~ 0
@@ -721,10 +695,6 @@ Wire Wire Line
 Connection ~ 7900 3200
 Wire Wire Line
 	7900 3200 8900 3200
-Wire Wire Line
-	13950 3000 13950 3200
-Wire Wire Line
-	13950 2200 13950 2400
 Wire Wire Line
 	12900 2400 11900 2400
 Wire Wire Line
@@ -3975,4 +3945,8 @@ F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/da
 	1    0    0    -1  
 $EndComp
 NoConn ~ 10200 8050
+Wire Wire Line
+	13950 1950 13950 2400
+Wire Wire Line
+	13950 2750 13950 3200
 $EndSCHEMATC
