@@ -3,4 +3,5 @@
   (lib (name 3.5mm_RiserPCB)(type KiCad)(uri ${KIPRJMOD}/3.5mm_RiserPCB.pretty)(options "")(descr ""))
   (lib (name RCA_KobiCon_161-4220-E)(type KiCad)(uri ${KIPRJMOD}/RCA_KobiCon_161-4220-E.pretty)(options "")(descr ""))
   (lib (name Panasonic_TQ2SA)(type KiCad)(uri ${KIPRJMOD}/Panasonic_TQ2SA.pretty)(options "")(descr ""))
+  (lib (name XSD-C4649_TO220_Heatsink)(type KiCad)(uri ${KIPRJMOD}/XSD-C4649_TO220_Heatsink.pretty)(options "")(descr ""))
 )
