@@ -914,71 +914,6 @@ Wire Wire Line
 Wire Wire Line
 	9700 6300 9700 6400
 $Comp
-L Device:Crystal_GND24 Y1
-U 1 1 5ED94C61
-P 6600 6850
-F 0 "Y1" V 6500 7050 50  0000 L CNN
-F 1 "8Mhz" V 6700 7050 50  0000 L CNN
-F 2 "Crystal:Crystal_SMD_EuroQuartz_MJ-4Pin_5.0x3.2mm" H 6600 6850 50  0001 C CNN
-F 3 "~" H 6600 6850 50  0001 C CNN
-	1    6600 6850
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:C_Small C6
-U 1 1 5ED96D0F
-P 6350 6500
-F 0 "C6" V 6250 6600 50  0000 C CNN
-F 1 "22pf" V 6450 6500 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 6350 6500 50  0001 C CNN
-F 3 "~" H 6350 6500 50  0001 C CNN
-	1    6350 6500
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	6450 6500 6600 6500
-$Comp
-L Device:C_Small C7
-U 1 1 5EDF5E0B
-P 6350 7150
-F 0 "C7" V 6250 7050 50  0000 C CNN
-F 1 "22pf" V 6500 7150 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 6350 7150 50  0001 C CNN
-F 3 "~" H 6350 7150 50  0001 C CNN
-	1    6350 7150
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	6450 7150 6600 7150
-Wire Wire Line
-	6250 7150 6100 7150
-$Comp
-L power:GND #PWR0105
-U 1 1 5EE55B11
-P 6100 7150
-F 0 "#PWR0105" H 6100 6900 50  0001 C CNN
-F 1 "GND" V 6105 7022 50  0000 R CNN
-F 2 "" H 6100 7150 50  0001 C CNN
-F 3 "" H 6100 7150 50  0001 C CNN
-	1    6100 7150
-	0    1    1    0   
-$EndComp
-$Comp
-L power:GND #PWR0106
-U 1 1 5EE55CC3
-P 6100 6500
-F 0 "#PWR0106" H 6100 6250 50  0001 C CNN
-F 1 "GND" V 6105 6372 50  0000 R CNN
-F 2 "" H 6100 6500 50  0001 C CNN
-F 3 "" H 6100 6500 50  0001 C CNN
-	1    6100 6500
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	6100 6500 6250 6500
-Connection ~ 6600 6500
-Connection ~ 6600 7150
-$Comp
 L Regulator_Linear:LM317_3PinPackage U1
 U 1 1 5EF1F50C
 P 5100 9950
@@ -2005,26 +1940,6 @@ Wire Wire Line
 	10450 7750 10200 7750
 Wire Wire Line
 	10450 8150 10200 8150
-Wire Wire Line
-	6600 7150 6600 7000
-Wire Wire Line
-	6600 6700 6600 6500
-Text Label 7000 7150 2    50   ~ 0
-PF0_OSC
-Text Label 7000 6500 2    50   ~ 0
-PF1_OSC
-Wire Wire Line
-	7000 6500 6600 6500
-Wire Wire Line
-	7000 7150 6600 7150
-Text Label 8700 7650 0    50   ~ 0
-PF0_OSC
-Text Label 8700 7750 0    50   ~ 0
-PF1_OSC
-Wire Wire Line
-	8700 7750 9100 7750
-Wire Wire Line
-	9100 7650 8700 7650
 $Comp
 L Device:R_Small R17
 U 1 1 621D37A8
@@ -2932,23 +2847,23 @@ $EndComp
 $Comp
 L Panasonic_TQ2SA:TQ2SA-Multi K1
 U 2 1 5E9A47B4
-P 2700 1650
-F 0 "K1" H 2900 1600 50  0000 C CNN
-F 1 "TQ2SA" H 2700 1800 50  0000 C CNN
-F 2 "Panasonic_TQ2SA:Panasonic_TQ2SA" H 2500 1700 50  0001 C CNN
-F 3 "" H 2500 1700 50  0001 C CNN
-	2    2700 1650
-	1    0    0    -1  
-$EndComp
-$Comp
-L Panasonic_TQ2SA:TQ2SA-Multi K1
-U 3 1 5E9985D7
 P 2700 2050
 F 0 "K1" H 2900 2000 50  0000 C CNN
 F 1 "TQ2SA" H 2700 2200 50  0000 C CNN
 F 2 "Panasonic_TQ2SA:Panasonic_TQ2SA" H 2500 2100 50  0001 C CNN
 F 3 "" H 2500 2100 50  0001 C CNN
-	3    2700 2050
+	2    2700 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Panasonic_TQ2SA:TQ2SA-Multi K1
+U 3 1 5E9985D7
+P 2700 1650
+F 0 "K1" H 2900 1600 50  0000 C CNN
+F 1 "TQ2SA" H 2700 1800 50  0000 C CNN
+F 2 "Panasonic_TQ2SA:Panasonic_TQ2SA" H 2500 1700 50  0001 C CNN
+F 3 "" H 2500 1700 50  0001 C CNN
+	3    2700 1650
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -3103,17 +3018,6 @@ F 1 "TQ2SA" H 7300 1850 50  0000 C CNN
 F 2 "Panasonic_TQ2SA:Panasonic_TQ2SA" H 6950 2050 50  0001 C CNN
 F 3 "" H 6950 2050 50  0001 C CNN
 	3    7150 2000
-	1    0    0    -1  
-$EndComp
-$Comp
-L Panasonic_TQ2SA:TQ2SA-Multi K7
-U 1 1 5F2C35E0
-P 7150 3750
-F 0 "K7" H 7150 3650 50  0000 C CNN
-F 1 "TQ2SA" H 7150 3900 50  0000 C CNN
-F 2 "Panasonic_TQ2SA:Panasonic_TQ2SA" H 6950 3800 50  0001 C CNN
-F 3 "" H 6950 3800 50  0001 C CNN
-	1    7150 3750
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -3466,8 +3370,6 @@ Wire Wire Line
 	5800 2600 6100 2600
 Wire Wire Line
 	5800 1800 6100 1800
-Text Label 4400 2000 0    50   ~ 0
-RCA1_L
 Text Label 4400 1900 0    50   ~ 0
 RCA2_L
 Wire Wire Line
@@ -3851,7 +3753,7 @@ U 1 1 62C45526
 P 14650 8800
 F 0 "J10" H 14730 8842 50  0000 L CNN
 F 1 "RCA1 GND JMP" H 14730 8751 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 14650 8800 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 14650 8800 50  0001 C CNN
 F 3 "~" H 14650 8800 50  0001 C CNN
 	1    14650 8800
 	1    0    0    -1  
@@ -3862,7 +3764,7 @@ U 1 1 62C45CCF
 P 14650 9350
 F 0 "J11" H 14730 9392 50  0000 L CNN
 F 1 "RCA2 GND JMP" H 14730 9301 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 14650 9350 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 14650 9350 50  0001 C CNN
 F 3 "~" H 14650 9350 50  0001 C CNN
 	1    14650 9350
 	1    0    0    -1  
@@ -4335,4 +4237,19 @@ Wire Notes Line
 	6300 3550 6300 2750
 Wire Notes Line
 	6300 2450 6300 2000
+$Comp
+L Panasonic_TQ2SA:TQ2SA-Multi K7
+U 1 1 5F2C35E0
+P 7150 3750
+F 0 "K7" H 7150 3650 50  0000 C CNN
+F 1 "TQ2SA" H 7150 3900 50  0000 C CNN
+F 2 "Panasonic_TQ2SA:Panasonic_TQ2SA" H 6950 3800 50  0001 C CNN
+F 3 "" H 6950 3800 50  0001 C CNN
+	1    7150 3750
+	1    0    0    -1  
+$EndComp
+Text Label 4400 2000 0    50   ~ 0
+RCA1_L
+NoConn ~ 9100 7650
+NoConn ~ 9100 7750
 $EndSCHEMATC
