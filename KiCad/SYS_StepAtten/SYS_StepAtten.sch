@@ -5,13 +5,13 @@ $Descr A3 16535 11693
 encoding utf-8
 Sheet 1 1
 Title "SYS - Step Attenuator"
-Date "2020-04-08"
-Rev "proto v0.0"
+Date "2020-06-04"
+Rev "v1.0"
 Comp "Philipp Schilk"
 Comment1 "https://github.com/TheSchilk/SYS_StepAtten"
 Comment2 ""
 Comment3 ""
-Comment4 ""
+Comment4 "[No Association with Schiit Audio]"
 $EndDescr
 $Comp
 L Device:R_Small R12
@@ -2720,8 +2720,8 @@ Wire Wire Line
 Connection ~ 13400 3950
 Text Notes 900  10800 0    100  ~ 0
 9VAC
-Text Notes 600  5350 0    50   ~ 0
-Note: \nInputs on small riser PCB \nabove pot_ext connector. \nIf unnconnected \nterminated through 10k\nhttps://github.com/TheSchilk/3.5mm_RiserPCB
+Text Notes 700  5300 0    50   ~ 0
+Note: \nAUX Inputs on small riser PCB \nabove pot_ext connector. \nhttps://github.com/TheSchilk/3.5mm_RiserPCB
 $Comp
 L Regulator_Linear:L7805 U2
 U 1 1 5E9F3700
@@ -4230,4 +4230,6 @@ F 3 "~" H 14600 8750 50  0001 C CNN
 	1    14600 8750
 	1    0    0    -1  
 $EndComp
+Text Notes 12350 7450 0    50   ~ 0
+Pull-downs on transistor bases. \nAvoids flickering during boot.
 $EndSCHEMATC
