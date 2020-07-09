@@ -63,10 +63,6 @@
 #define PIN_RLY_SEL2          GPIO_Pin_9
 #define PORT_RLY_SEL2         GPIOA
 
-//Input Select Relay Output 3
-#define PIN_RLY_SEL3          GPIO_Pin_10
-#define PORT_RLY_SEL3         GPIOA
-
 //Configuration Jumper 1
 #define PIN_CFG_1             GPIO_Pin_5
 #define PORT_CFG_1            GPIOB

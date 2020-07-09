@@ -3,7 +3,7 @@
 int main(void)
 {
 	// Relay state that selects a specific input
-	const uint32_t input_relay_code[INPUT_COUNT] = {0x2,0x0,0x5,0x1};
+	const uint32_t input_relay_code[INPUT_COUNT] = {0x0,0x2,0x1,0x3};
 	// LEDs states that indicate different inputs
 	const uint32_t input_led_state[INPUT_COUNT] = {0x1,0x2,0x4,0x7};
 

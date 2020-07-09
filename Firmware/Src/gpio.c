@@ -47,18 +47,21 @@ void gpio_init(){
 	GPIO_StructInit(&gpio_struct);
 	gpio_struct.GPIO_Pin = PIN_LED_0;
 	gpio_struct.GPIO_Mode = GPIO_Mode_OUT;
+	gpio_struct.GPIO_OType = GPIO_OType_OD;
 	GPIO_Init(PORT_LED_0, &gpio_struct);
 
 	//Configure LED 1
 	GPIO_StructInit(&gpio_struct);
 	gpio_struct.GPIO_Pin = PIN_LED_1;
 	gpio_struct.GPIO_Mode = GPIO_Mode_OUT;
+	gpio_struct.GPIO_OType = GPIO_OType_OD;
 	GPIO_Init(PORT_LED_1, &gpio_struct);
 
 	//Configure LED 2
 	GPIO_StructInit(&gpio_struct);
 	gpio_struct.GPIO_Pin = PIN_LED_2;
 	gpio_struct.GPIO_Mode = GPIO_Mode_OUT;
+	gpio_struct.GPIO_OType = GPIO_OType_OD;
 	GPIO_Init(PORT_LED_2, &gpio_struct);
 
 	//Configure all Attenuator Relay Outputs
@@ -78,12 +81,6 @@ void gpio_init(){
 	gpio_struct.GPIO_Pin = PIN_RLY_SEL2;
 	gpio_struct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_Init(PORT_RLY_SEL2, &gpio_struct);
-
-	//Configure Select Relay Output 3
-	GPIO_StructInit(&gpio_struct);
-	gpio_struct.GPIO_Pin = PIN_RLY_SEL3;
-	gpio_struct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_Init(PORT_RLY_SEL3, &gpio_struct);
 
 	//Configure Configuration Jumper 1
 	GPIO_StructInit(&gpio_struct);
@@ -108,33 +105,6 @@ void gpio_init(){
 	gpio_struct.GPIO_Pin = PIN_RLY_MUTE;
 	gpio_struct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_Init(PORT_RLY_MUTE, &gpio_struct);
-
-	//Configure Select Relays
-
-	//1
-	GPIO_StructInit(&gpio_struct);
-	gpio_struct.GPIO_Pin = PIN_RLY_SEL1;
-	gpio_struct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_Init(PORT_RLY_SEL1, &gpio_struct);
-
-	//2
-	GPIO_StructInit(&gpio_struct);
-	gpio_struct.GPIO_Pin = PIN_RLY_SEL2;
-	gpio_struct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_Init(PORT_RLY_SEL2, &gpio_struct);
-
-	//3
-	GPIO_StructInit(&gpio_struct);
-	gpio_struct.GPIO_Pin = PIN_RLY_SEL3;
-	gpio_struct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_Init(PORT_RLY_SEL3, &gpio_struct);
-
-	//Configure Relay Attenuator Outputs
-	GPIO_StructInit(&gpio_struct);
-	gpio_struct.GPIO_Pin = PINS_RLY_ATTEN;
-	gpio_struct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_Init(PORT_RLY_ATTEN, &gpio_struct);
-
 
 	//Initialize button state
 	if(GPIO_ReadInputDataBit(PORT_BTN, PIN_BTN)){
@@ -167,7 +137,6 @@ void gpio_set_atten(uint32_t atten){
 void gpio_set_select(uint32_t select){
 	GPIO_WriteBit(PORT_RLY_SEL1, PIN_RLY_SEL1, (select >> 0) & 0x01);
 	GPIO_WriteBit(PORT_RLY_SEL2, PIN_RLY_SEL2, (select >> 1) & 0x01);
-	GPIO_WriteBit(PORT_RLY_SEL3, PIN_RLY_SEL3, (select >> 2) & 0x01);
 }
 
 //Mute Output
@@ -178,6 +147,7 @@ void gpio_set_mute(uint32_t do_mute){
 //Write to the 3 onboard LEDs
 //Will cancel any "decaying" led writes
 void gpio_write_leds(uint32_t value){
+	value = ~value; // Driving low side of LED
 	GPIO_WriteBit(PORT_LED_0, PIN_LED_0, (value >> 0) & 0x1);
 	GPIO_WriteBit(PORT_LED_1, PIN_LED_1, (value >> 1) & 0x1);
 	GPIO_WriteBit(PORT_LED_2, PIN_LED_2, (value >> 2) & 0x1);
