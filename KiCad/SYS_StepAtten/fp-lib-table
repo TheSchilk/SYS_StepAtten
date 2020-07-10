@@ -6,4 +6,5 @@
   (lib (name XSD-C4649_TO220_Heatsink)(type KiCad)(uri ${KIPRJMOD}/XSD-C4649_TO220_Heatsink.pretty)(options "")(descr ""))
   (lib (name RGB_LED_1.6x1.6x0)(type KiCad)(uri ${KIPRJMOD}/RGB_LED_1.6x1.6x0.pretty)(options "")(descr ""))
   (lib (name MountingHole_4.3mm_M4_ReducedSize)(type KiCad)(uri ${KIPRJMOD}/MountingHole_4.3mm_M4_ReducedSize.pretty)(options "")(descr ""))
+  (lib (name BarrelPolarity_3mm)(type KiCad)(uri ${KIPRJMOD}/BarrelPolarity_3mm.pretty)(options "")(descr ""))
 )

@@ -2,4 +2,5 @@
   (lib (name RCA_Stereo)(type Legacy)(uri ${KIPRJMOD}/RCA_Stereo.lib)(options "")(descr ""))
   (lib (name 3.5mm_RiserPCB)(type Legacy)(uri ${KIPRJMOD}/3.5mm_RiserPCB/3.5mm_RiserPCB.lib)(options "")(descr ""))
   (lib (name Panasonic_TQ2SA)(type Legacy)(uri ${KIPRJMOD}/Panasonic_TQ2SA.lib)(options "")(descr ""))
+  (lib (name BarrelPolarity)(type Legacy)(uri ${KIPRJMOD}/BarrelPolarity.lib)(options "")(descr ""))
 )
