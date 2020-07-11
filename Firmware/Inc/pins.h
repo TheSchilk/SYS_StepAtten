@@ -21,8 +21,8 @@
 #define AN_CH_POT             ADC_Channel_9
 
 //Input Select Button
-#define PIN_BTN               GPIO_Pin_15
-#define PORT_BTN              GPIOA
+#define PIN_SW                GPIO_Pin_15
+#define PORT_SW               GPIOA
 
 //External Poti Input
 #define PIN_POT_EXT           GPIO_Pin_0

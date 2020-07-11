@@ -18,6 +18,6 @@
 volatile uint16_t adc_dmabuf[2*ADC_MOVING_AVG_LEN];
 
 void adc_init();
-uint32_t adc_getPotVal(uint32_t use_external);
+uint32_t adc_getPotVal();
 
 #endif /* ADC_H_ */

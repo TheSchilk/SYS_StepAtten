@@ -10,6 +10,6 @@
 //Systick IRQ
 void SysTick_Handler(){
 	systick_delays(); // Used for delays
-  	gpio_btn_update();    // Button De-bouncing
-	gpio_led_decay_update(); // LED decay timing
+  	gpio_sw_update();    // Switch De-bouncing
+	gpio_leds_update(); // LED timing
 }

@@ -21,7 +21,11 @@
 // Number of ms that the LEDs stay active after an input was selected
 #define LED_DECAY_MS 1000
 
-
+typedef enum{
+	state_normal,
+	state_select,
+	state_safety
+} STATE_T;
 
 
 

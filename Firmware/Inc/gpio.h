@@ -10,30 +10,26 @@
 
 #include <stm32f0xx.h>
 
+typedef enum{
+	leds_normal,
+	leds_decay,
+	leds_blink
+} LED_MODE_T;
+
 void gpio_init();
 
 void gpio_set_atten(uint32_t atten);
 void gpio_set_select(uint32_t select);
 void gpio_set_mute(uint32_t do_mute);
 
-uint32_t gpio_ext_pot_selected();
-
-volatile uint32_t led_decay_cnt;
-volatile uint32_t led_decay_en;
-
-void gpio_write_leds(uint32_t value);
-void gpio_write_leds_decay(uint32_t value, uint32_t decay_ms);
-void gpio_led_decay_update();
+void gpio_leds(uint32_t value, LED_MODE_T mode, uint32_t time_ms);
+void gpio_leds_update();
 
 //Debounce Period in ms
-#define GPIO_BTN_DBNC_MAX 200
+#define GPIO_SW_DBNC 200
 
-volatile uint32_t gpio_btn_count;
-volatile uint32_t gpio_btn_state;
-volatile uint32_t gpio_btn_trig;
-
-uint32_t gpio_btn_toggled();
-void gpio_btn_update();
+uint32_t gpio_sw_state();
+void gpio_sw_update();
 
 
 #endif /* GPIO_H_ */

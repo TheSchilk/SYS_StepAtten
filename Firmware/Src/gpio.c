@@ -7,6 +7,16 @@
 
 #include "sys_stepatten.h"
 
+// Private dec.
+void gpio_write_leds(uint32_t value);
+volatile uint32_t sw_time;
+volatile uint32_t sw_state;
+volatile uint_least8_t leds_value;
+volatile LED_MODE_T leds_mode;
+volatile uint32_t leds_state;
+volatile uint32_t leds_time_set;
+volatile uint32_t leds_time;
+
 //Initialize all GPIOs
 void gpio_init(){
 	//GPIO Init Struct
@@ -24,11 +34,11 @@ void gpio_init(){
 	gpio_struct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(PORT_POT, &gpio_struct);
 
-	//Configure Input Select Button
+	//Configure Switch
 	GPIO_StructInit(&gpio_struct);
-	gpio_struct.GPIO_Pin = PIN_BTN;
+	gpio_struct.GPIO_Pin = PIN_SW ;
 	gpio_struct.GPIO_Mode = GPIO_Mode_IN;
-	GPIO_Init(PORT_BTN, &gpio_struct);
+	GPIO_Init(PORT_SW , &gpio_struct);
 
 	//Configure External Poti Input
 	GPIO_StructInit(&gpio_struct);
@@ -107,18 +117,17 @@ void gpio_init(){
 	GPIO_Init(PORT_RLY_MUTE, &gpio_struct);
 
 	//Initialize button state
-	if(GPIO_ReadInputDataBit(PORT_BTN, PIN_BTN)){
-		gpio_btn_state = 1;
-		gpio_btn_count = GPIO_BTN_DBNC_MAX;
+	if(GPIO_ReadInputDataBit(PORT_SW, PIN_SW)){
+		sw_state = 1;
+		sw_time = GPIO_SW_DBNC;
 	} else {
-		gpio_btn_state = 0;
-		gpio_btn_count = 0;
+		sw_state = 0;
+		sw_time = 0;
 	}
-	gpio_btn_trig = 0;
 
-	//Initialize led decay variables
-	led_decay_cnt = 0;
-	led_decay_en = 0;
+	//Initialize led state
+	leds_mode = leds_normal;
+	leds_value = 0x0;
 }
 
 //Write Binary to Relay Outputs
@@ -144,70 +153,72 @@ void gpio_set_mute(uint32_t do_mute){
 	GPIO_WriteBit(PORT_RLY_MUTE, PIN_RLY_MUTE, !do_mute);
 }
 
-//Write to the 3 onboard LEDs
-//Will cancel any "decaying" led writes
+//Set the LED pins
 void gpio_write_leds(uint32_t value){
 	value = ~value; // Driving low side of LED
 	GPIO_WriteBit(PORT_LED_0, PIN_LED_0, (value >> 0) & 0x1);
 	GPIO_WriteBit(PORT_LED_1, PIN_LED_1, (value >> 1) & 0x1);
 	GPIO_WriteBit(PORT_LED_2, PIN_LED_2, (value >> 2) & 0x1);
-	led_decay_en = 0;
 }
 
-//Write a value to the leds that will disappear after decay_ms seconds
-void gpio_write_leds_decay(uint32_t value, uint32_t decay_ms){
-	led_decay_cnt = decay_ms;
+//Set the LED output color and mode (blinking, decay, normal)
+void gpio_leds(uint32_t value, LED_MODE_T mode, uint32_t time_ms){
+	leds_mode = mode;
+	leds_time = leds_time_set = time_ms;
+	leds_value = value;
+	leds_state = 0x1;
 	gpio_write_leds(value);
-	led_decay_en = 1;
 }
 
-//Handle decaying of LEDs
+//Handle LED effects
 //Called by Systick IRQ
-void gpio_led_decay_update(){
-	if(led_decay_en){
-		led_decay_cnt--;
-		if(led_decay_cnt==0){
-			gpio_write_leds(0);
-			led_decay_en = 0;
+void gpio_leds_update(){
+	switch(leds_mode){
+	case leds_decay:
+		leds_time--;
+		if(leds_time == 0){
+			gpio_write_leds(0x0);
+			leds_mode = leds_normal;
+		}
+		break;
+	case leds_blink:
+		leds_time--;
+		if(leds_time == 0){
+			leds_time = leds_time_set;
+			leds_state = !leds_state;
+			gpio_write_leds(leds_value*leds_state);
+		}
+		break;
+	case leds_normal:
+	default:
+		break;
+	}
+}
+
+
+uint32_t gpio_sw_state(){
+	return sw_state;
+}
+
+void gpio_sw_update(){
+	if(GPIO_ReadInputDataBit(PORT_SW, PIN_SW)){
+		// Switch pressed
+		if(sw_time != GPIO_SW_DBNC){
+			sw_time++;
+		}
+
+	} else {
+		// Switch not pressed
+		if(sw_time != 0){
+			sw_time--;
 		}
 	}
-}
 
-//Check if the external potentiometer is selected (plugged in)
-uint32_t gpio_ext_pot_selected(){
-	return GPIO_ReadInputDataBit(PORT_POT_EXT_SENSE, PIN_POT_EXT_SENSE);
-}
-
-//Checks if the button (which is really a switch to match the Schiit Sys Formfactor)
-//has been toggled. Will only return true once for each physical toggle.
-//Includes de-bouncing
-uint32_t gpio_btn_toggled(){
-	if(gpio_btn_trig){
-		gpio_btn_trig = 0;
-		return 1;
+	if(sw_time == 0){
+		sw_state = 0;
 	}
-
-	return 0;
-}
-
-//Handles de-bouncing of the input switch/button
-void gpio_btn_update(){
-	if(GPIO_ReadInputDataBit(PORT_BTN, PIN_BTN) && gpio_btn_count != GPIO_BTN_DBNC_MAX){
-		gpio_btn_count++;
-	}
-	if(!GPIO_ReadInputDataBit(PORT_BTN, PIN_BTN) && gpio_btn_count != 0){
-		gpio_btn_count--;
-	}
-
-	if(gpio_btn_count == GPIO_BTN_DBNC_MAX && gpio_btn_state == 0){
-		gpio_btn_state = 1;
-		gpio_btn_trig = 1;
-	}
-
-	if(gpio_btn_count == 0 && gpio_btn_state == 1){
-		gpio_btn_state = 0;
-		gpio_btn_trig = 1;
+	if(sw_time == GPIO_SW_DBNC){
+		sw_state = 1;
 	}
 }
-
 

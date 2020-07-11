@@ -64,7 +64,8 @@ void adc_init(){
 }
 
 uint32_t adc_getPotVal(uint32_t use_external){
-	//The ADC continuously samples both ADC Channels, starting with the lower channel
+
+	//The ADC continuously samples both ADC Channels
 	//Both values are stored sequentially in the DAM buffer
 	//Decide if the first or second value of each pair should be used.
 
