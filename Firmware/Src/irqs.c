@@ -7,9 +7,9 @@
 
 #include "sys_stepatten.h"
 
-//Systick IRQ
+//Systick IRQ, Called every millisecond
 void SysTick_Handler(){
-	systick_delays(); // Used for delays
+	systick_delays();    // Used for delays
   	gpio_sw_update();    // Switch De-bouncing
-	gpio_leds_update(); // LED timing
+	gpio_leds_update();  // LED timing
 }

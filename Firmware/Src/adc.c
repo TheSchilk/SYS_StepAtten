@@ -63,6 +63,7 @@ void adc_init(){
 	ADC_StartOfConversion(ADC1);
 }
 
+// Get the average of the last ADC readings
 uint32_t adc_getPotVal(uint32_t use_external){
 
 	//The ADC continuously samples both ADC Channels

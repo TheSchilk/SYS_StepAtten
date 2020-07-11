@@ -195,11 +195,12 @@ void gpio_leds_update(){
 	}
 }
 
-
+// Get the current (debounced) switch state
 uint32_t gpio_sw_state(){
 	return sw_state;
 }
 
+// Handle switch debouncing. Called once every ms from IRQ
 void gpio_sw_update(){
 	if(GPIO_ReadInputDataBit(PORT_SW, PIN_SW)){
 		// Switch pressed

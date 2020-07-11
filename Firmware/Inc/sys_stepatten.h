@@ -15,18 +15,14 @@
 #include "adc.h"
 #include "systick.h"
 
-
 // The number of inputs
 #define INPUT_COUNT 4
-// Number of ms that the LEDs stay active after an input was selected
-#define LED_DECAY_MS 1000
 
+// UI States
 typedef enum{
 	state_normal,
 	state_select,
 	state_safety
 } STATE_T;
-
-
 
 #endif /* SYS_STEPATTEN_H_ */
