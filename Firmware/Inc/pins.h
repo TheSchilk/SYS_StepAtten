@@ -34,8 +34,8 @@
 #define PORT_POT_EXT_SENSE    GPIOB
 
 //LED 0
-#define PIN_LED_0             GPIO_Pin_7
-#define PORT_LED_0            GPIOA
+#define PIN_LED_0             GPIO_Pin_0
+#define PORT_LED_0            GPIOB
 
 //LED 1
 #define PIN_LED_1             GPIO_Pin_11
@@ -46,7 +46,7 @@
 #define PORT_LED_2            GPIOB
 
 //Attenuator Relay Output *
-#define PINS_RLY_ATTEN        (GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7)
+#define PINS_RLY_ATTEN        (GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6)
 #define PINS_RLY_ATTEN_MASK   0x7F
 #define PINS_RLY_ATTEN_SHIFT  0
 #define PORT_RLY_ATTEN        GPIOA

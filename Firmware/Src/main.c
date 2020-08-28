@@ -18,8 +18,6 @@ int main(void)
 
 	// TODO Read last input state from flash and set it here
 
-
-
 	STATE_T state;
 	if(gpio_sw_state() == 0){
 		// Start in normal mode
@@ -35,11 +33,12 @@ int main(void)
 	while(1){
 		// Get the current position of the potentiometer
 		uint32_t pot_postion = adc_getPotVal(0);
-
+		volatile uint32_t attenpos = 0;
 		switch(state){
 		case state_normal:
 			// Write current position to the attenuator
 			gpio_set_atten(pot_postion >> 5);
+			attenpos = pot_postion >> 5;
 
 			// Mute if the lowest position is selected
 			if(pot_postion == 0){
@@ -66,6 +65,10 @@ int main(void)
 
 			gpio_leds(input_led_state[current_input], leds_normal, 0);
 
+			// Select the input
+
+			gpio_set_select(input_relay_code[current_input]);
+
 			// Once the switch is released, go either to normal or safety mode
 			if(gpio_sw_state() == 0){
 				if((pot_postion >> 5) == 0){
@@ -83,7 +86,7 @@ int main(void)
 			break;
 		case state_safety:
 			// Make sure we are muted
-			gpio_set_mute(0);
+			gpio_set_mute(1);
 
 			// if the switch gets pressed again, go to selection mode
 			if(gpio_sw_state()){
