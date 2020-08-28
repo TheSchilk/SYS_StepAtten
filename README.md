@@ -17,7 +17,8 @@ WIP
 | Attenuator Type          | Constant input impedance                  |
 | Expected Input Impedance | 10K (can be adjusted)                     |
 | Steps                    | 127 + Relay Mute                          |
-| Power Input              | 9Vdc, center positive barrel jack. 500ma+ |
+| Power Input              | 9Vdc, center positive barrel jack. 500mA+ |
+| Power Consumption        | Max 2.25W (250mA at 9VDc)                 |
 | Control                  | Internal controls or wired remote control |
 
 ## Grounding
