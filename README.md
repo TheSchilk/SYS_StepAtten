@@ -31,7 +31,7 @@ Remote Control connector pinout (looking at connector from back of unit):
 
 | 3V    | GND  |
 |-------|------|
-| Sense | Poti |
+| **Sense** | **Poti** |
 
 A remote consists of a potentiometer between 3V and GND with wiper connected to 'Poti'
 A 10K resistor has to be placed between GND and Sense for the remote to be detected.

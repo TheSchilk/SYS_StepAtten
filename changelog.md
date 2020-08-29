@@ -7,7 +7,7 @@
 - Updated external interface to support switch
 - Added jumper for load adjustment
 
-#v1.0
+# v1.0
  - Should now actually fit Schiit Sys
  - Added grounding configuration jumpers
  - Added series load-adjustment
