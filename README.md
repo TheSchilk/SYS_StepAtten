@@ -18,6 +18,7 @@ located inside the unit right next to the switch.
 |      Cycle      |        0       |        0       |
 | Cycle on toggle |        1       |        0       |
 |      Select     |        0       |        1       | 
+
 I personally prefer using the momentary switch (ALPS SPUN190900) in the
 *Cycle* mode.
 
