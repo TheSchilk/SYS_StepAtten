@@ -1,3 +1,6 @@
+# v1.2
+- Added pulldowns on config jumpers.
+
 # v1.1
 - Moved to DC input
 - Change to switchmode power supply
