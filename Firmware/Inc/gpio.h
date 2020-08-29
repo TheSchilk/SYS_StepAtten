@@ -22,13 +22,18 @@ void gpio_set_atten(uint32_t atten);
 void gpio_set_select(uint32_t select);
 void gpio_set_mute(uint32_t do_mute);
 
+uint32_t gpio_read_config();
+
 void gpio_leds(uint32_t value, LED_MODE_T mode, uint32_t time_ms);
 void gpio_leds_update();
 
 //Debounce Period in ms
-#define GPIO_SW_DBNC 200
+#define GPIO_SW_DBNC 50
 
 uint32_t gpio_sw_state();
+uint32_t gpio_did_toggle();
+uint32_t gpio_did_press();
+
 void gpio_sw_update();
 
 

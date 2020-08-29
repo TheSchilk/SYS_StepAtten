@@ -7,8 +7,9 @@
 
 #include "sys_stepatten.h"
 
-// Private dec.
 void gpio_write_leds(uint32_t value);
+
+// All these variables are updated through the systick interrupt
 volatile uint32_t sw_time;
 volatile uint32_t sw_state;
 volatile uint_least8_t leds_value;
@@ -16,6 +17,9 @@ volatile LED_MODE_T leds_mode;
 volatile uint32_t leds_state;
 volatile uint32_t leds_time_set;
 volatile uint32_t leds_time;
+
+uint32_t sw_toggle_prev;
+uint32_t sw_press_prev;
 
 //Initialize all GPIOs
 void gpio_init(){
@@ -125,6 +129,9 @@ void gpio_init(){
 		sw_time = 0;
 	}
 
+	sw_press_prev = sw_state;
+	sw_toggle_prev = sw_state;
+
 	//Initialize led state
 	leds_mode = leds_normal;
 	leds_value = 0x0;
@@ -151,6 +158,14 @@ void gpio_set_select(uint32_t select){
 //Mute Output
 void gpio_set_mute(uint32_t do_mute){
 	GPIO_WriteBit(PORT_RLY_MUTE, PIN_RLY_MUTE, !do_mute);
+}
+
+// Read current state of the config pins
+uint32_t gpio_read_config(){
+	uint32_t config = 0;
+	config |= GPIO_ReadInputDataBit(PORT_CFG_1, PIN_CFG_1) << 0;
+	config |= GPIO_ReadInputDataBit(PORT_CFG_2, PIN_CFG_2) << 1;
+	return config;
 }
 
 //Set the LED pins
@@ -198,6 +213,38 @@ void gpio_leds_update(){
 // Get the current (debounced) switch state
 uint32_t gpio_sw_state(){
 	return sw_state;
+}
+
+// Check if the switch was toggle since the last time
+// this function was called
+uint32_t gpio_did_toggle(){
+	uint32_t current = gpio_sw_state();
+
+	uint32_t result;
+	if(sw_toggle_prev !=  current){
+		result =  1;
+	} else {
+		result =  0;
+	}
+
+	sw_toggle_prev = current;
+	return result;
+}
+
+// Check if the switch was pressed since the last time
+// this function was called
+uint32_t gpio_did_press(){
+	uint32_t current = gpio_sw_state();
+
+	uint32_t result;
+	if(current == 1 && sw_press_prev == 0){
+		result = 1;
+	} else {
+		result = 0;
+	}
+
+	sw_press_prev = current;
+	return result;
 }
 
 // Handle switch debouncing. Called once every ms from IRQ

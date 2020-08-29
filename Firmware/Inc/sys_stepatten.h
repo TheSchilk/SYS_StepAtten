@@ -9,7 +9,8 @@
 #define SYS_STEPATTEN_H_
 
 //CMSIS and StdPeriphLib
-#include <stm32f0xx.h>
+#include "stm32f0xx.h"
+#include "ui.h"
 #include "pins.h"
 #include "gpio.h"
 #include "adc.h"
@@ -17,12 +18,5 @@
 
 // The number of inputs
 #define INPUT_COUNT 4
-
-// UI States
-typedef enum{
-	state_normal,
-	state_select,
-	state_safety
-} STATE_T;
 
 #endif /* SYS_STEPATTEN_H_ */

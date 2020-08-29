@@ -8,7 +8,7 @@
 #ifndef PINS_H_
 #define PINS_H_
 
-#include "sys_stepatten.h"
+#include <stm32f0xx.h>
 
 /*
  * Definitions of all Pin Assignments
