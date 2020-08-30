@@ -50,8 +50,9 @@ void flash_erase_section();
 void flash_writehw(uint32_t adr, uint16_t data);
 
 uint32_t flash_read_state(){
-	// Check if Flash is empty (because this is the first startup)
-	if(flashsection_hw[0] == 0xFFFF){
+	// Check if first entry is a valid entry
+	if((flashsection_hw[0] & 0xFF00) != 0){
+		// Nope. Get flash into a workable state.
 
 		// Check if the whole flash section is empty
 		// Otherwise erase it
@@ -92,7 +93,6 @@ uint32_t flash_read_state(){
 
 void flash_update_state(){
 	if(flash_timeout == 0 && current_input != last_saved_input){
-		gpio_leds(0x7, leds_decay, 300);
 		last_saved_input = current_input;
 
 		// Go to the next index and make sure we still have space
