@@ -24,6 +24,8 @@ void ui_setup(uint32_t initial_input){
 	gpio_set_select(input_relay_lookup[initial_input]);
 	gpio_leds(input_led_lookup[initial_input], leds_decay, LED_DURATION_MS);
 	input = initial_input;
+	gpio_set_mute(1);
+	mute_count = MUTE_TIMEOUT_MS;
 }
 
 // Update the UI
