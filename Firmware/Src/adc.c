@@ -13,6 +13,7 @@ volatile uint16_t adc_dmabuf[ADC_DMABUF_LEN];
 
 
 int32_t adc_avgbuf(uint32_t offset);
+uint32_t adc_scale(int32_t val, int32_t a, int32_t m, int32_t d);
 
 // Configure ADC
 // Runs continuously and DMAs all readings into the
@@ -31,8 +32,8 @@ void adc_init(){
 	adc_struct.ADC_ScanDirection = ADC_ScanDirection_Upward;
 
 	//Configure the two ADC Channels we are using
-	ADC_ChannelConfig(ADC1, AN_CH_POT,     ADC_SampleTime_7_5Cycles);
-	ADC_ChannelConfig(ADC1, AN_CH_POT_EXT, ADC_SampleTime_7_5Cycles);
+	ADC_ChannelConfig(ADC1, AN_CH_POT,       ADC_SampleTime_7_5Cycles);
+	ADC_ChannelConfig(ADC1, AN_CH_POT_EXT,   ADC_SampleTime_7_5Cycles);
 	ADC_ChannelConfig(ADC1, AN_CH_SENSE_EXT, ADC_SampleTime_7_5Cycles);
 
 	//Setup DMA
@@ -103,6 +104,17 @@ int32_t adc_avgbuf(uint32_t offset){
 	return sum/count;
 }
 
+
+uint32_t adc_scale(int32_t val, int32_t a, int32_t m, int32_t d){
+	if(val == -1){
+		return val;
+	}
+	int32_t result = ((val + a)*m)/d;
+	result = (result > ADC_MAX) ? ADC_MAX : result;
+	result = (result < 0) ? 0 : result;
+	return result;
+}
+
 // Return 1 if there is an external control unit connected, 0 otherwise.
 uint32_t adc_ext_sense(){
 	// Get the average of the last readings of the sense voltage
@@ -125,9 +137,13 @@ uint32_t adc_ext_sense(){
 // for the selected potentiometer
 uint32_t adc_getPotVal(){
 	if(adc_ext_sense()){
-		return adc_avgbuf(ADC_EXT_POT_BUFOFFSET);
+		// Extenal Potentiometer
+		uint32_t reading = adc_avgbuf(ADC_EXT_POT_BUFOFFSET);
+		return adc_scale(reading, ADC_EXT_ADD, ADC_EXT_MULT, ADC_EXT_DIV);
 	} else {
-		return adc_avgbuf(ADC_POT_BUFOFFSET);
+		// Internal Potentiometer
+		uint32_t reading =  adc_avgbuf(ADC_POT_BUFOFFSET);
+		return adc_scale(reading, ADC_INT_ADD, ADC_INT_MULT, ADC_INT_DIV);
 	}
 }
 

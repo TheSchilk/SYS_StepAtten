@@ -10,6 +10,8 @@
 
 int main(void)
 {
+	//TODO refactor: bools + all flash in ui
+
 	systick_init(); // Configure the SysTsick
   	gpio_init();    // Configure all GPIOs
 	adc_init();     // Configure the ADC

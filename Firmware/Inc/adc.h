@@ -26,6 +26,15 @@
 // Threshold for detection of external switch
 #define ADC_THRH_SW                (ADC_MAX/3)
 
+#define ADC_INT_ADD  0
+#define ADC_INT_MULT 102
+#define ADC_INT_DIV  100
+
+#define ADC_EXT_ADD  0
+#define ADC_EXT_MULT 102
+#define ADC_EXT_DIV  100
+
+
 void adc_init();
 
 uint32_t adc_getPotVal();
