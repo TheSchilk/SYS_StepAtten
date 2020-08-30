@@ -1,5 +1,6 @@
 # v1.3
  - Fixed pinout problem
+ - Added short protection to external control connector
 
 # v1.2
  - Added pulldowns on config jumpers.
