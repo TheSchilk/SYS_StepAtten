@@ -50,9 +50,6 @@ void flash_erase_section();
 void flash_writehw(uint32_t adr, uint16_t data);
 
 uint32_t flash_read_state(){
-
-	// TODO Disable interrupts while flash is unlocked
-
 	// Check if Flash is empty (because this is the first startup)
 	if(flashsection_hw[0] == 0xFFFF){
 
@@ -109,7 +106,6 @@ void flash_update_state(){
 
 		// Write the input to flash
 		flash_writehw((uint32_t) &flashsection_hw[last_index], (uint16_t) current_input);
-
 	}
 }
 
@@ -126,15 +122,17 @@ void flash_inputchange(uint32_t new_input){
 
 
 void flash_erase_section(){
-	// TODO Interrupts
+	__disable_irq();
 	FLASH_Unlock();
 	FLASH_ErasePage((uint32_t) &flashsection_hw[0]);
 	FLASH_Lock();
+	__enable_irq();
 }
 
 void flash_writehw(uint32_t adr, uint16_t data){
-	// TODO Interrupts
+	__disable_irq();
 	FLASH_Unlock();
 	FLASH_ProgramHalfWord(adr, data);
 	FLASH_Lock();
+	__enable_irq();
 }
