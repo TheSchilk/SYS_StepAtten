@@ -10,21 +10,7 @@
 
 #include <stdint.h>
 
-// UI Modes
-typedef enum{
-	mode_cycle,  // Cycle through inputs when button is pressed
-	mode_cycle_toggle, // Cycle through inputs when button is toggled
-	mode_select // Select inputs with Poti as long as button is pressed.
-} UI_MODE_T;
-
-// UI States
-typedef enum{
-	state_normal,
-	state_select,
-	state_safety
-} UI_STATE_T;
-
-void ui_setup(const UI_MODE_T mode, uint32_t initial_input);
+void ui_setup(uint32_t initial_input);
 void ui_update();
 void ui_mutetimeout_update();
 

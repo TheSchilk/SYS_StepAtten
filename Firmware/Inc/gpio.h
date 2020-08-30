@@ -30,9 +30,7 @@ void gpio_leds_update();
 //Debounce Period in ms
 #define GPIO_SW_DBNC 50
 
-uint32_t gpio_sw_state();
-uint32_t gpio_did_toggle();
-uint32_t gpio_did_press();
+uint32_t gpio_sw_activated();
 
 void gpio_sw_update();
 

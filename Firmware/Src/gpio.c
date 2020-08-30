@@ -7,19 +7,29 @@
 
 #include "sys_stepatten.h"
 
+typedef enum{
+	switch_momentary = 0,
+	switch_latching = 1
+} SWICHTYPE_T;
+
 void gpio_write_leds(uint32_t value);
 
-// All these variables are updated through the systick interrupt
+// Internal switch type
+SWICHTYPE_T int_sw_type;
+
+// Internal switch debouncing
 volatile uint32_t sw_time;
 volatile uint32_t sw_state;
+
+// LEDs
 volatile uint_least8_t leds_value;
 volatile LED_MODE_T leds_mode;
 volatile uint32_t leds_state;
 volatile uint32_t leds_time_set;
 volatile uint32_t leds_time;
 
-uint32_t sw_toggle_prev;
-uint32_t sw_press_prev;
+
+uint32_t sw_int_prev;
 
 //Initialize all GPIOs
 void gpio_init(){
@@ -120,6 +130,10 @@ void gpio_init(){
 	gpio_struct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_Init(PORT_RLY_MUTE, &gpio_struct);
 
+	// Determine type of internal switch from config
+	// jumper position.
+	int_sw_type = GPIO_ReadInputDataBit(PORT_CFG_1, PIN_CFG_1);
+
 	//Initialize button state
 	if(GPIO_ReadInputDataBit(PORT_SW, PIN_SW)){
 		sw_state = 1;
@@ -129,8 +143,7 @@ void gpio_init(){
 		sw_time = 0;
 	}
 
-	sw_press_prev = sw_state;
-	sw_toggle_prev = sw_state;
+	sw_int_prev = sw_state;
 
 	//Initialize led state
 	leds_mode = leds_normal;
@@ -210,40 +223,22 @@ void gpio_leds_update(){
 	}
 }
 
-// Get the current (debounced) switch state
-uint32_t gpio_sw_state(){
-	return sw_state;
-}
-
-// Check if the switch was toggle since the last time
-// this function was called
-uint32_t gpio_did_toggle(){
-	uint32_t current = gpio_sw_state();
-
-	uint32_t result;
-	if(sw_toggle_prev !=  current){
-		result =  1;
+uint32_t gpio_sw_activated(){
+	uint32_t result = 0;
+	// Check if internal switch was activated
+	if(int_sw_type == switch_momentary){
+		// Momentary switch, check if it was pressed.
+		if(sw_int_prev == 0 && sw_state == 1){
+			result |= 1;
+		}
 	} else {
-		result =  0;
+		// Latching switch, check if it was toggled.
+		if(sw_int_prev != sw_state){
+			result |= 1;
+		}
 	}
 
-	sw_toggle_prev = current;
-	return result;
-}
-
-// Check if the switch was pressed since the last time
-// this function was called
-uint32_t gpio_did_press(){
-	uint32_t current = gpio_sw_state();
-
-	uint32_t result;
-	if(current == 1 && sw_press_prev == 0){
-		result = 1;
-	} else {
-		result = 0;
-	}
-
-	sw_press_prev = current;
+	sw_int_prev = sw_state;
 	return result;
 }
 
