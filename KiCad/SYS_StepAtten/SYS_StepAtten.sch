@@ -2180,8 +2180,6 @@ F 3 "" H 1500 7800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1500 7800 1500 8450
-Wire Wire Line
 	1500 8450 1400 8450
 Wire Wire Line
 	1400 8650 1500 8650
@@ -3521,8 +3519,6 @@ F 3 "" H 3400 6750 50  0001 C CNN
 	1    3400 6750
 	1    0    0    -1  
 $EndComp
-Entry Wire Line
-	20100 4850 20200 4950
 Wire Wire Line
 	14600 2250 14750 2250
 Wire Wire Line
@@ -3644,8 +3640,6 @@ F 3 "" H 2700 8950 50  0001 C CNN
 	1    2700 8950
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	1500 8650 1500 8950
 Wire Wire Line
 	1700 8850 1700 8950
 Wire Wire Line
@@ -4445,4 +4439,21 @@ F 3 "" H 5350 8900 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	5350 8900 5350 8750
+$Comp
+L Device:Polyfuse_Small F2
+U 1 1 5F626A9A
+P 1500 8050
+F 0 "F2" H 1432 8004 50  0000 R CNN
+F 1 "0.15A" H 1432 8095 50  0000 R CNN
+F 2 "Fuse:Fuse_1206_3216Metric" H 1550 7850 50  0001 L CNN
+F 3 "~" H 1500 8050 50  0001 C CNN
+	1    1500 8050
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	1500 7950 1500 7800
+Wire Wire Line
+	1500 8150 1500 8450
+Wire Wire Line
+	1500 8650 1500 8950
 $EndSCHEMATC
