@@ -8,8 +8,10 @@
 #ifndef SYS_STEPATTEN_H_
 #define SYS_STEPATTEN_H_
 
-//CMSIS and StdPeriphLib
+// CMSIS and StdPeriphLib
 #include "stm32f0xx.h"
+
+
 #include "ui.h"
 #include "pins.h"
 #include "gpio.h"

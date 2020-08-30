@@ -19,18 +19,17 @@ volatile uint32_t mute_count;
 uint32_t input;
 
 // Setup ui
-void ui_setup(uint32_t initial_input){
-	mute_count = 0;
-	gpio_set_select(input_relay_lookup[initial_input]);
-	gpio_leds(input_led_lookup[initial_input], leds_decay, LED_DURATION_MS);
-	input = initial_input;
+void ui_setup(){
 	gpio_set_mute(1);
+	mute_count = 0;
+	input = flash_read_input();
+	gpio_set_select(input_relay_lookup[input]);
+	gpio_leds(input_led_lookup[input], leds_decay, LED_DURATION_MS);
 	mute_count = MUTE_TIMEOUT_MS;
 }
 
 // Update the UI
 void ui_update(){
-
 	// Update attenuator position
 	uint32_t pot_postion = adc_getPotVal();
 	gpio_set_atten(pot_postion >> 5);

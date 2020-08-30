@@ -18,9 +18,12 @@
 #define FLASH_SECTION_LENGTH_W   (FLASH_SECTION_LENGTH_HW/2)
 
 #define FLASH_SECTION_ORIGIN 0x8007c00
+#define FLASH_SECTION_END    0x8008000
 
-uint32_t flash_read_state();
-void flash_update_state();
+#define FLASH_DEFAULT_INPUT      0x0
+
+uint32_t flash_read_input();
+void flash_attempt_write();
 void flash_timeout_update();
 void flash_inputchange(uint32_t input);
 

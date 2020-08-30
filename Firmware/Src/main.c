@@ -5,25 +5,25 @@
  *  Created on: 23 Apr 2020
  *      Author: pschilk
  */
-
 #include <sys_stepatten.h>
 
 int main(void)
 {
-	//TODO refactor: bools + all flash in ui
+	// Configure 1ms SysTick Interrupt
+	systick_init();
 
-	systick_init(); // Configure the SysTsick
-  	gpio_init();    // Configure all GPIOs
-	adc_init();     // Configure the ADC
+	// Configure all GPIOs
+  	gpio_init();
 
-	// Get previously selected input from flash
-	uint32_t initial_input = flash_read_state();
+  	// Configure ADC
+	adc_init();
 
-	ui_setup(initial_input);
+	// Setup UI
+	ui_setup();
 
 	while(1){
 		ui_update();
-		flash_update_state();
+		flash_attempt_write();
 		systick_dlyms(100);
 	}
 }

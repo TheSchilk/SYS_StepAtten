@@ -49,7 +49,10 @@ volatile uint16_t* flashsection_hw = (uint16_t*) FLASH_SECTION_ORIGIN;
 void flash_erase_section();
 void flash_writehw(uint32_t adr, uint16_t data);
 
-uint32_t flash_read_state(){
+// Read last selected input from memory or setup memory
+// correctly if there is no input saved. Defaults to
+// FLASH_DEFAULT_INPUT.
+uint32_t flash_read_input(){
 	// Check if first entry is a valid entry
 	if((flashsection_hw[0] & 0xFF00) != 0){
 		// Nope. Get flash into a workable state.
@@ -64,7 +67,7 @@ uint32_t flash_read_state(){
 		}
 
 		// Save the default input to the first address:
-		flash_writehw((uint32_t) &flashsection_hw[0], 0x0000);
+		flash_writehw((uint32_t) &flashsection_hw[0], FLASH_DEFAULT_INPUT);
 		last_index = 0;
 		last_saved_input = 0;
 		current_input = 0;
@@ -91,7 +94,11 @@ uint32_t flash_read_state(){
 	}
 }
 
-void flash_update_state(){
+
+// Attempt to write the current input to flash. Will do so if the selected
+// input has changed since last write, and input has remained unchanged for
+// FLASH_SAVE_INPUT_TIMEOUT_S seconds
+void flash_attempt_write(){
 	if(flash_timeout == 0 && current_input != last_saved_input){
 		last_saved_input = current_input;
 
@@ -109,18 +116,21 @@ void flash_update_state(){
 	}
 }
 
+// Called by IRQ every 1ms
+// Keeps track of time since last input change
 void flash_timeout_update(){
 	if(flash_timeout != 0){
 		flash_timeout--;
 	}
 }
 
+// Reset timer on input change.
 void flash_inputchange(uint32_t new_input){
 	current_input = new_input;
 	flash_timeout = FLASH_SAVE_INPUT_TIMEOUT_S * 1000;
 }
 
-
+// Erase the section dedicated to saving the current input
 void flash_erase_section(){
 	__disable_irq();
 	FLASH_Unlock();
@@ -129,10 +139,13 @@ void flash_erase_section(){
 	__enable_irq();
 }
 
+// Write a half-word to flash.
 void flash_writehw(uint32_t adr, uint16_t data){
-	__disable_irq();
-	FLASH_Unlock();
-	FLASH_ProgramHalfWord(adr, data);
-	FLASH_Lock();
-	__enable_irq();
+	if(adr >= FLASH_SECTION_ORIGIN && adr < FLASH_SECTION_END){
+		__disable_irq();
+		FLASH_Unlock();
+		FLASH_ProgramHalfWord(adr, data);
+		FLASH_Lock();
+		__enable_irq();
+	}
 }

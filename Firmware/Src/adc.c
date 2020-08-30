@@ -19,11 +19,11 @@ uint32_t adc_scale(int32_t val, int32_t a, int32_t m, int32_t d);
 // Runs continuously and DMAs all readings into the
 // circular buffer adc_dmabuf
 void adc_init(){
-	//Turn on ADC Clock
+	// Turn on ADC Clock
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
 	ADC_ClockModeConfig(ADC1, ADC_ClockMode_SynClkDiv4);
 
-	//Configure the ADC peripheral
+	// Configure the ADC peripheral
 	ADC_InitTypeDef adc_struct;
 	ADC_StructInit(&adc_struct);
 	adc_struct.ADC_Resolution = ADC_Resolution_12b;
@@ -31,12 +31,12 @@ void adc_init(){
 	adc_struct.ADC_DataAlign = ADC_DataAlign_Right;
 	adc_struct.ADC_ScanDirection = ADC_ScanDirection_Upward;
 
-	//Configure the two ADC Channels we are using
+	// Configure the two ADC Channels we are using
 	ADC_ChannelConfig(ADC1, AN_CH_POT,       ADC_SampleTime_7_5Cycles);
 	ADC_ChannelConfig(ADC1, AN_CH_POT_EXT,   ADC_SampleTime_7_5Cycles);
 	ADC_ChannelConfig(ADC1, AN_CH_SENSE_EXT, ADC_SampleTime_7_5Cycles);
 
-	//Setup DMA
+	// Setup DMA
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 	DMA_InitTypeDef initdma = {0};
 
@@ -63,13 +63,13 @@ void adc_init(){
 		adc_dmabuf[i] = 0xFFFF;
 	}
 
-	//Turn on ADC
+	// Turn on ADC
 	ADC_Cmd(ADC1, ENABLE);
 
 	 // Wait until the ADC is ready
 	while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADRDY));
 
-	//Start Conversion
+	// Start Conversion
 	ADC_ContinuousModeCmd(ADC1, ENABLE);
 	ADC_StartOfConversion(ADC1);
 }
@@ -95,16 +95,19 @@ int32_t adc_avgbuf(uint32_t offset){
 	}
 
 
-	//If there are no samples in the buffer yet, return -1
+	// If there are no samples in the buffer yet, return -1
 	if(count == 0){
 		return -1;
 	}
 
-	//Return average
+	// Return average
 	return sum/count;
 }
 
 
+// Scale reading as follows: ((val + a)*m)/d
+// Will pass through error states (-1) and limit all other
+// results to the interval [0,ADC_MAX]
 uint32_t adc_scale(int32_t val, int32_t a, int32_t m, int32_t d){
 	if(val == -1){
 		return val;
@@ -115,21 +118,21 @@ uint32_t adc_scale(int32_t val, int32_t a, int32_t m, int32_t d){
 	return result;
 }
 
-// Return 1 if there is an external control unit connected, 0 otherwise.
-uint32_t adc_ext_sense(){
+// Return true if there is an external control unit connected, false otherwise.
+bool adc_ext_sense(){
 	// Get the average of the last readings of the sense voltage
 	int32_t reading = adc_avgbuf(ADC_EXT_SENSE_BUFOFFSET);
 
 	// if there are no readings yet, stay with the internal potentiometer
 	if(reading == -1){
-		return 0;
+		return false;
 	}
 
 	// if the reading is below the sense threshold, use the external potentiometer
 	if(reading <= ADC_THRH_SENSE){
-		return 1;
+		return true;
 	} else {
-		return 0;
+		return false;
 	}
 }
 

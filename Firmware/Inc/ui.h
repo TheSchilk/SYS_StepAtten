@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 
-void ui_setup(uint32_t initial_input);
+void ui_setup();
 void ui_update();
 void ui_mutetimeout_update();
 

@@ -8,11 +8,13 @@
 #ifndef ADC_H_
 #define ADC_H_
 
-//Number of samples that are kept track of and averaged
+#include <stdbool.h>
+
+// Number of samples that are kept track of and averaged
 #define ADC_MOVING_AVG_LEN   10
 
-//Length of the DMA buffer
-#define ADC_DMABUF_LEN       3*ADC_MOVING_AVG_LEN //3 Channels Sampled, so need 3x the length.
+// Length of the DMA buffer
+#define ADC_DMABUF_LEN       3*ADC_MOVING_AVG_LEN // 3 Channels Sampled, so need 3x the length.
 
 // Position of the readings in the buffer
 #define ADC_POT_BUFOFFSET          2
@@ -38,7 +40,7 @@
 void adc_init();
 
 uint32_t adc_getPotVal();
-uint32_t adc_ext_sense();
+bool adc_ext_sense();
 int32_t  adc_getExtSwPosition();
 
 #endif /* ADC_H_ */
