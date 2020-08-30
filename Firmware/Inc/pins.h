@@ -15,7 +15,7 @@
  * !! Any section marked with '*' is not solely dependent on definitions in this file
  */
 
-//Internal Poti Input
+//Internal Poti Input *
 #define PIN_POT               GPIO_Pin_1
 #define PORT_POT              GPIOB
 #define AN_CH_POT             ADC_Channel_9
@@ -24,14 +24,15 @@
 #define PIN_SW                GPIO_Pin_15
 #define PORT_SW               GPIOA
 
-//External Poti Input
-#define PIN_POT_EXT           GPIO_Pin_0
+//External Poti Input *
+#define PIN_POT_EXT           GPIO_Pin_4
 #define PORT_POT_EXT          GPIOB
 #define AN_CH_POT_EXT         ADC_Channel_8
 
-//External Poti Connected Sense
-#define PIN_POT_EXT_SENSE     GPIO_Pin_4
-#define PORT_POT_EXT_SENSE    GPIOB
+//External Poti Connected Sense *
+#define PIN_SENSE_EXT         GPIO_Pin_7
+#define PORT_SENSE_EXT        GPIOA
+//#define AN_CH_SENSE_EXT       ADC_Channel_
 
 //LED 0
 #define PIN_LED_0             GPIO_Pin_0

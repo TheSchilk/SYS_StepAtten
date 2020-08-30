@@ -72,7 +72,9 @@ void adc_init(){
 }
 
 // Get the average of the last ADC readings
-uint32_t adc_getPotVal(uint32_t use_external){
+uint32_t adc_getPotVal(){
+
+	uint32_t use_external = 0;
 
 	//The ADC continuously samples both ADC Channels
 	//Both values are stored sequentially in the DAM buffer

@@ -30,7 +30,7 @@ void ui_setup(uint32_t initial_input){
 void ui_update(){
 
 	// Update attenuator position
-	uint32_t pot_postion = adc_getPotVal(0);
+	uint32_t pot_postion = adc_getPotVal();
 	gpio_set_atten(pot_postion >> 5);
 
 	if(gpio_sw_activated()){

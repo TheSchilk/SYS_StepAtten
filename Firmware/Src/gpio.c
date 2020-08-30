@@ -63,9 +63,9 @@ void gpio_init(){
 
 	//Configure External Poti Sense
 	GPIO_StructInit(&gpio_struct);
-	gpio_struct.GPIO_Pin = PIN_POT_EXT_SENSE;
+	gpio_struct.GPIO_Pin = PIN_SENSE_EXT;
 	gpio_struct.GPIO_Mode = GPIO_Mode_IN;
-	GPIO_Init(PORT_POT_EXT_SENSE, &gpio_struct);
+	GPIO_Init(PORT_SENSE_EXT, &gpio_struct);
 
 	//Configure LED 0
 	GPIO_StructInit(&gpio_struct);
