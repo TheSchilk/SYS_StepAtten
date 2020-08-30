@@ -1,3 +1,11 @@
+/*
+ * Firmware for SYS-StepAtten
+ * https://www.github.com/TheSchilk/SYS_StepAtten
+ *
+ *  Created on: 23 Apr 2020
+ *      Author: pschilk
+ */
+
 #include <sys_stepatten.h>
 
 int main(void)
@@ -7,12 +15,12 @@ int main(void)
 
 	// TODO external ctrl
 
+	systick_init(); // Configure the SysTsick
+  	gpio_init();    // Configure all GPIOs
+	adc_init();     // Configure the ADC
+
 	// Get previously selected input from flash
 	uint32_t current_input = flash_read_state();
-
-	systick_init(); // Configure the SysTsick
-  	gpio_init();    // Configre all GPIOs
-	adc_init();     // Configure the ADC
 
 	// Read the current config jumper setting to determine UI mode
 	const UI_MODE_T ui_mode = config_ui_select[gpio_read_config()];
@@ -20,7 +28,7 @@ int main(void)
 	ui_setup(ui_mode, current_input);
 
 	while(1){
-		ui_update(ui_mode, &current_input);
+		ui_update(ui_mode);
 		flash_update_state(current_input);
 		systick_dlyms(100);
 	}

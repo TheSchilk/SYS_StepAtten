@@ -11,7 +11,7 @@
 #include <stdint.h>
 
 // Time in seconds before an input change is saved to flash
-#define FLASH_SAVE_INPUT_TIMEOUT_S 10
+#define FLASH_SAVE_INPUT_TIMEOUT_S 5
 
 #define FLASH_SECTION_LENGTH     0x400
 #define FLASH_SECTION_LENGTH_HW  (FLASH_SECTION_LENGTH/2)
@@ -20,8 +20,8 @@
 #define FLASH_SECTION_ORIGIN 0x8007c00
 
 uint32_t flash_read_state();
-void flash_update_state(uint32_t input);
+void flash_update_state();
 void flash_timeout_update();
-void flash_reset_timeout();
+void flash_inputchange(uint32_t input);
 
 #endif /* FLASH_H_ */

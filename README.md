@@ -19,6 +19,9 @@ located inside the unit right next to the switch.
 | Cycle on toggle |        1       |        0       |
 |      Select     |        0       |        1       | 
 
+Note that this setting is only updated during powerup. After selecting
+a new UI, the unit has to be restarted for the change to take affect.
+
 I personally prefer using the momentary switch (ALPS SPUN190900) in the
 *Cycle* mode.
 

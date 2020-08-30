@@ -25,7 +25,7 @@ typedef enum{
 } UI_STATE_T;
 
 void ui_setup(const UI_MODE_T mode, uint32_t initial_input);
-void ui_update(const UI_MODE_T state, uint32_t* input);
+void ui_update();
 void ui_mutetimeout_update();
 
 #define MUTE_TIMEOUT_MS 1500

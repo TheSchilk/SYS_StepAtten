@@ -8,6 +8,14 @@
 
 #include "sys_stepatten.h"
 
+// DMA buffer
+volatile uint16_t adc_dmabuf[2*ADC_MOVING_AVG_LEN];
+
+
+
+// Configure ADC
+// Runs continuously and DMAs all readings into the
+// circular buffer adc_dmabuf
 void adc_init(){
 	//Turn on ADC Clock
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);

@@ -8,16 +8,30 @@
 #include "ui.h"
 #include "sys_stepatten.h"
 
+// Lookups for relay setting and led color
 const uint32_t input_led_lookup[INPUT_COUNT] = {0x1, 0x2, 0x4, 0x7};
 const uint32_t input_relay_lookup[INPUT_COUNT] = {0x0, 0x2, 0x1, 0x3};
+
+// The current state the UI is in
 UI_STATE_T state;
 
-void ui_cycle(uint32_t* current_input, uint32_t did_activate);
-void ui_select(uint32_t* current_input);
+// The selected UI mode
+UI_STATE_T ui_mode;
 
+// Timeout for mute
 volatile uint32_t mute_count;
 
+// Currently selected input
+uint32_t input;
+
+void ui_cycle(uint32_t did_activate);
+void ui_select();
+
+
+// Setup the UI depending on which mode we are in
 void ui_setup(const UI_MODE_T mode, uint32_t initial_input){
+
+	ui_mode = mode;
 
 	mute_count = 0;
 
@@ -27,6 +41,7 @@ void ui_setup(const UI_MODE_T mode, uint32_t initial_input){
 			// Start in normal state
 			gpio_leds(input_led_lookup[initial_input], leds_decay, LED_DURATION_MS);
 			gpio_set_select(input_relay_lookup[initial_input]);
+			input = initial_input;
 			state = state_normal;
 		} else {
 			// Start in select state
@@ -36,29 +51,30 @@ void ui_setup(const UI_MODE_T mode, uint32_t initial_input){
 	case mode_cycle_toggle:
 	case mode_cycle:
 	default:
-		state = state_normal;
 		gpio_leds(input_led_lookup[initial_input], leds_decay, 800);
 		gpio_set_select(input_relay_lookup[initial_input]);
+		input = initial_input;
 		break;
 	}
 }
 
-void ui_update(const UI_MODE_T mode, uint32_t* input){
-	switch(mode){
+// Update the UI
+void ui_update(){
+	switch(ui_mode){
 	case mode_cycle_toggle:
-		ui_cycle(input, gpio_did_toggle());
+		ui_cycle(gpio_did_toggle());
 		break;
 	case mode_select:
-		ui_select(input);
+		ui_select();
 		break;
 	case mode_cycle:
 	default:
-		ui_cycle(input, gpio_did_press());
+		ui_cycle(gpio_did_press());
 		break;
 	}
 }
 
-void ui_cycle(uint32_t* current_input, uint32_t did_activate){
+void ui_cycle(uint32_t did_activate){
 
 	uint32_t pot_postion = adc_getPotVal(0);
 	gpio_set_atten(pot_postion >> 5);
@@ -69,16 +85,14 @@ void ui_cycle(uint32_t* current_input, uint32_t did_activate){
 		mute_count = MUTE_TIMEOUT_MS;
 
 		// Go to next input
-		*current_input = (*current_input + 1) % INPUT_COUNT;
-		gpio_set_select(input_relay_lookup[*current_input]);
+		input = (input + 1) % INPUT_COUNT;
+		gpio_set_select(input_relay_lookup[input]);
 
 		// Turn on LED
-		gpio_leds(input_led_lookup[*current_input], leds_decay, LED_DURATION_MS);
+		gpio_leds(input_led_lookup[input], leds_decay, LED_DURATION_MS);
 
-		// Reset the flash timeout
-		// This way, if there are no more input changes for some time
-		// the input change will be saved in flash.
-		flash_reset_timeout();
+		// Inform flash of input change
+		flash_inputchange(input);
 	}
 
 	if(mute_count != 0){
@@ -126,13 +140,11 @@ void ui_select(uint32_t* current_input){
 		// Once the switch is released, go either to normal or safety mode
 		if(gpio_sw_state() == 0){
 			// Select current input
-			*current_input = selected_input;
+			input = selected_input;
 			gpio_set_select(input_relay_lookup[selected_input]);
 
-			// Reset the flash timeout
-			// This way, if there are no more input changes for some time
-			// the input change will be saved in flash.
-			flash_reset_timeout();
+			// Inform flash of new input
+			flash_inputchange(input);
 
 			if((pot_postion >> 5) == 0){
 				// Safe to go back to normal mode
@@ -158,7 +170,7 @@ void ui_select(uint32_t* current_input){
 			// Otherwise, back to normal mode as soon as volume is at 0
 			gpio_set_atten(0);
 			state = state_normal;
-			gpio_leds(input_led_lookup[*current_input], leds_decay, LED_DURATION_MS);
+			gpio_leds(input_led_lookup[input], leds_decay, LED_DURATION_MS);
 		}
 		break;
 	default:
