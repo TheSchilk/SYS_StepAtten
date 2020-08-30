@@ -25,17 +25,17 @@
 #define PORT_SW               GPIOA
 
 //External Poti Input *
-#define PIN_POT_EXT           GPIO_Pin_4
+#define PIN_POT_EXT           GPIO_Pin_0
 #define PORT_POT_EXT          GPIOB
 #define AN_CH_POT_EXT         ADC_Channel_8
 
 //External Poti Connected Sense *
 #define PIN_SENSE_EXT         GPIO_Pin_7
 #define PORT_SENSE_EXT        GPIOA
-//#define AN_CH_SENSE_EXT       ADC_Channel_
+#define AN_CH_SENSE_EXT       ADC_Channel_7
 
 //LED 0
-#define PIN_LED_0             GPIO_Pin_0
+#define PIN_LED_0             GPIO_Pin_4
 #define PORT_LED_0            GPIOB
 
 //LED 1
