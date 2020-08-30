@@ -1,11 +1,14 @@
+# v1.3
+ - Fixed pinout problem
+
 # v1.2
-- Added pulldowns on config jumpers.
+ - Added pulldowns on config jumpers.
 
 # v1.1
-- Moved to DC input
-- Change to switchmode power supply
-- Updated external interface to support switch
-- Added jumper for load adjustment
+ - Moved to DC input
+ - Change to switchmode power supply
+ - Updated external interface to support switch
+ - Added jumper for load adjustment
 
 # v1.0
  - Should now actually fit Schiit Sys

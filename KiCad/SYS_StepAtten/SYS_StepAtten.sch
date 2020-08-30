@@ -5,8 +5,8 @@ $Descr A3 16535 11693
 encoding utf-8
 Sheet 1 1
 Title "SYS - Step Attenuator"
-Date "2020-07-12"
-Rev "v1.2"
+Date "2020-08-30"
+Rev "v1.3"
 Comp "Philipp Schilk"
 Comment1 "https://github.com/TheSchilk/SYS_StepAtten"
 Comment2 ""
@@ -1782,7 +1782,7 @@ Text Label 10600 8550 2    50   ~ 0
 btn
 Text Label 8850 8050 0    50   ~ 0
 poti
-Text Label 8850 7950 0    50   ~ 0
+Text Label 8850 8250 0    50   ~ 0
 led0
 Text Label 10600 8150 2    50   ~ 0
 led1
@@ -2251,9 +2251,9 @@ Wire Wire Line
 Wire Wire Line
 	8850 8150 9100 8150
 Wire Wire Line
-	9100 8250 8600 8250
+	9100 7950 8600 7950
 Wire Wire Line
-	8850 7950 9100 7950
+	8850 8250 9100 8250
 Wire Wire Line
 	8850 8050 9100 8050
 Wire Wire Line
@@ -4347,7 +4347,7 @@ Text Label 3350 8550 2    50   ~ 0
 extctrl_pot
 Text Label 3350 8350 2    50   ~ 0
 extctrl_sense
-Text Label 8600 8250 0    50   ~ 0
+Text Label 8600 7950 0    50   ~ 0
 extctrl_pot
 Text Label 10750 7750 2    50   ~ 0
 extctrl_sense
@@ -4386,10 +4386,10 @@ $EndComp
 Text Notes 14900 4400 0    50   ~ 0
 (Can be bypassed with\njumpers)
 $Comp
-L Device:R_Small R?
+L Device:R_Small R57
 U 1 1 5F68395A
 P 4050 8650
-F 0 "R?" V 4100 8750 50  0000 L CNN
+F 0 "R57" V 4100 8750 50  0000 L CNN
 F 1 "10K" V 4100 8400 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" H 4050 8650 50  0001 C CNN
 F 3 "~" H 4050 8650 50  0001 C CNN
@@ -4417,10 +4417,10 @@ $EndComp
 Wire Wire Line
 	4050 8900 4050 8750
 $Comp
-L Device:R_Small R?
+L Device:R_Small R58
 U 1 1 5F8CD811
 P 5350 8650
-F 0 "R?" V 5400 8750 50  0000 L CNN
+F 0 "R58" V 5400 8750 50  0000 L CNN
 F 1 "10K" V 5400 8400 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" H 5350 8650 50  0001 C CNN
 F 3 "~" H 5350 8650 50  0001 C CNN
