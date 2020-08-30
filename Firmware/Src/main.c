@@ -10,8 +10,6 @@
 
 int main(void)
 {
-	// TODO external ctrl
-
 	systick_init(); // Configure the SysTsick
   	gpio_init();    // Configure all GPIOs
 	adc_init();     // Configure the ADC

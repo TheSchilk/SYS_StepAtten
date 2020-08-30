@@ -9,9 +9,10 @@
 #include "sys_stepatten.h"
 
 // DMA buffer
-volatile uint16_t adc_dmabuf[2*ADC_MOVING_AVG_LEN];
+volatile uint16_t adc_dmabuf[ADC_DMABUF_LEN];
 
 
+int32_t adc_avgbuf(uint32_t offset);
 
 // Configure ADC
 // Runs continuously and DMAs all readings into the
@@ -32,6 +33,7 @@ void adc_init(){
 	//Configure the two ADC Channels we are using
 	ADC_ChannelConfig(ADC1, AN_CH_POT,     ADC_SampleTime_7_5Cycles);
 	ADC_ChannelConfig(ADC1, AN_CH_POT_EXT, ADC_SampleTime_7_5Cycles);
+	ADC_ChannelConfig(ADC1, AN_CH_SENSE_EXT, ADC_SampleTime_7_5Cycles);
 
 	//Setup DMA
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
@@ -71,39 +73,84 @@ void adc_init(){
 	ADC_StartOfConversion(ADC1);
 }
 
-// Get the average of the last ADC readings
-uint32_t adc_getPotVal(){
 
-	uint32_t use_external = 0;
+int32_t adc_avgbuf(uint32_t offset){
+	// The ADC continuously samples all 3 channles,
+	// these values are store sequentially in the ciruclar
+	// DMA buffer.
+	// This function extracts one channel give it's offset
+	// and averages the readings.
+	// Returns -1 if there are no readings yet.
 
-	//The ADC continuously samples both ADC Channels
-	//Both values are stored sequentially in the DAM buffer
-	//Decide if the first or second value of each pair should be used.
-
-	uint32_t pot_select_offset;
-	if(use_external){
-		pot_select_offset = (AN_CH_POT_EXT > AN_CH_POT) ? 1 : 0;
-	} else {
-		pot_select_offset = (AN_CH_POT_EXT > AN_CH_POT) ? 0 : 1;
-	}
-
-	//Iterate over the ADC samples for the correct channel and sum all readings
-	//If the buffer has not yet been completely filled, the unwritten values
-	//are initialized to 0xFFFFFFFF and can be ignored.
 	uint32_t sum = 0;
 	uint32_t count = 0;
-	for(int i = 0; i < ADC_DMABUF_LEN; i = i + 2){
-		if(adc_dmabuf[i+pot_select_offset] != 0xFFFF){
-			sum += adc_dmabuf[i+pot_select_offset];
+	for(int i = 0; i < ADC_DMABUF_LEN; i = i + 3){
+		// If there is no reading yet, the DMA buffer
+		// will read 0xFFFF
+		if(adc_dmabuf[i+offset] != 0xFFFF){
+			sum += adc_dmabuf[i+offset];
 			count++;
 		}
 	}
 
-	//If there are no samples in the buffer yet, return 0
+
+	//If there are no samples in the buffer yet, return -1
 	if(count == 0){
+		return -1;
+	}
+
+	//Return average
+	return sum/count;
+}
+
+// Return 1 if there is an external control unit connected, 0 otherwise.
+uint32_t adc_ext_sense(){
+	// Get the average of the last readings of the sense voltage
+	int32_t reading = adc_avgbuf(ADC_EXT_SENSE_BUFOFFSET);
+
+	// if there are no readings yet, stay with the internal potentiometer
+	if(reading == -1){
 		return 0;
+	}
+
+	// if the reading is below the sense threshold, use the external potentiometer
+	if(reading <= ADC_THRH_SENSE){
+		return 1;
 	} else {
-		//Return average
-		return sum/count;
+		return 0;
+	}
+}
+
+// Get the average of the last ADC readings
+// for the selected potentiometer
+uint32_t adc_getPotVal(){
+	if(adc_ext_sense()){
+		return adc_avgbuf(ADC_EXT_POT_BUFOFFSET);
+	} else {
+		return adc_avgbuf(ADC_POT_BUFOFFSET);
+	}
+}
+
+// Return the position of the external switch (1/0)
+// Returns -1 if no external switch is found.
+int32_t adc_getExtSwPosition(){
+	int32_t reading = adc_avgbuf(ADC_EXT_SENSE_BUFOFFSET);
+
+	// If there are no readings, return -1
+	if(reading == -1){
+		return -1;
+	}
+
+	// if there is no external switch connected, return -1
+	if(reading > ADC_THRH_SENSE){
+		return -1;
+	}
+
+	// if the reading is below the threshold,
+	// the switch is pressed. Return 1.
+	if(reading <= ADC_THRH_SW){
+		return 1;
+	} else {
+		return 0;
 	}
 }

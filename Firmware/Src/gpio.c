@@ -18,8 +18,14 @@ void gpio_write_leds(uint32_t value);
 SWICHTYPE_T int_sw_type;
 
 // Internal switch debouncing
-volatile uint32_t sw_time;
-volatile uint32_t sw_state;
+volatile uint32_t int_sw_time;
+volatile uint32_t int_sw_state;
+uint32_t int_sw_prev;
+
+// External switch debouncing
+volatile uint32_t ext_sw_time;
+volatile int32_t ext_sw_state;
+int32_t ext_sw_prev;
 
 // LEDs
 volatile uint_least8_t leds_value;
@@ -29,7 +35,6 @@ volatile uint32_t leds_time_set;
 volatile uint32_t leds_time;
 
 
-uint32_t sw_int_prev;
 
 //Initialize all GPIOs
 void gpio_init(){
@@ -64,7 +69,8 @@ void gpio_init(){
 	//Configure External Poti Sense
 	GPIO_StructInit(&gpio_struct);
 	gpio_struct.GPIO_Pin = PIN_SENSE_EXT;
-	gpio_struct.GPIO_Mode = GPIO_Mode_IN;
+	gpio_struct.GPIO_Mode = GPIO_Mode_AN;
+	gpio_struct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(PORT_SENSE_EXT, &gpio_struct);
 
 	//Configure LED 0
@@ -134,16 +140,20 @@ void gpio_init(){
 	// jumper position.
 	int_sw_type = GPIO_ReadInputDataBit(PORT_CFG_1, PIN_CFG_1);
 
-	//Initialize button state
+	//Initialize switch state
 	if(GPIO_ReadInputDataBit(PORT_SW, PIN_SW)){
-		sw_state = 1;
-		sw_time = GPIO_SW_DBNC;
+		int_sw_state = 1;
+		int_sw_time = GPIO_INT_SW_DBNC;
 	} else {
-		sw_state = 0;
-		sw_time = 0;
+		int_sw_state = 0;
+		int_sw_time = 0;
 	}
+	int_sw_prev = int_sw_state;
 
-	sw_int_prev = sw_state;
+	//Initialize external switch state
+	ext_sw_state = -1;
+	ext_sw_time = 0;
+	ext_sw_prev = -1;
 
 	//Initialize led state
 	leds_mode = leds_normal;
@@ -223,45 +233,83 @@ void gpio_leds_update(){
 	}
 }
 
+// Return 1 if either the internal or external switch
+// has been activated.
 uint32_t gpio_sw_activated(){
 	uint32_t result = 0;
 	// Check if internal switch was activated
+	uint32_t int_sw = int_sw_state;
 	if(int_sw_type == switch_momentary){
 		// Momentary switch, check if it was pressed.
-		if(sw_int_prev == 0 && sw_state == 1){
+		if(int_sw_prev == 0 && int_sw == 1){
 			result |= 1;
 		}
 	} else {
 		// Latching switch, check if it was toggled.
-		if(sw_int_prev != sw_state){
+		if(int_sw_prev != int_sw){
 			result |= 1;
 		}
 	}
+	int_sw_prev = int_sw;
 
-	sw_int_prev = sw_state;
+
+	// Check if external switch was activated
+	int32_t ext_sw = ext_sw_state;
+	if(ext_sw_prev != -1 && ext_sw != -1){
+		if(ext_sw_prev == 0 && ext_sw == 1){
+			result |= 1;
+		}
+	}
+	ext_sw_prev = ext_sw;
 	return result;
 }
 
 // Handle switch debouncing. Called once every ms from IRQ
 void gpio_sw_update(){
+	// Internal Switch
 	if(GPIO_ReadInputDataBit(PORT_SW, PIN_SW)){
 		// Switch pressed
-		if(sw_time != GPIO_SW_DBNC){
-			sw_time++;
-		}
-
+		int_sw_time = (int_sw_time == GPIO_INT_SW_DBNC) ? int_sw_time : int_sw_time + 1;
 	} else {
 		// Switch not pressed
-		if(sw_time != 0){
-			sw_time--;
-		}
+		int_sw_time = (int_sw_time == 0) ? int_sw_time : int_sw_time -1 ;
 	}
 
-	if(sw_time == 0){
-		sw_state = 0;
+	if(int_sw_time == 0){
+		int_sw_state = 0;
 	}
-	if(sw_time == GPIO_SW_DBNC){
-		sw_state = 1;
+	if(int_sw_time == GPIO_INT_SW_DBNC){
+		int_sw_state = 1;
+	}
+
+	// External switch
+
+	uint32_t no_switch = 0;
+
+	switch(adc_getExtSwPosition()){
+	case -1:
+		// No Switch detected
+		ext_sw_state = -1;
+		ext_sw_time = 0;
+		no_switch = 1;
+		break;
+	case 0:
+		// External switch not pressed
+		ext_sw_time = (ext_sw_time == 0) ? ext_sw_time : ext_sw_time - 1;
+		break;
+	case 1:
+		// External switch not pressed
+		ext_sw_time = (ext_sw_time == GPIO_EXT_SW_DBNC) ? ext_sw_time : ext_sw_time + 1;
+		break;
+	}
+
+	if(!no_switch){
+		if(ext_sw_time == 0){
+			ext_sw_state = 0;
+		}
+		if(ext_sw_time == GPIO_EXT_SW_DBNC){
+			ext_sw_state = 1;
+		}
 	}
 }
 

@@ -27,8 +27,9 @@ uint32_t gpio_read_config();
 void gpio_leds(uint32_t value, LED_MODE_T mode, uint32_t time_ms);
 void gpio_leds_update();
 
-//Debounce Period in ms
-#define GPIO_SW_DBNC 50
+//Debounce Period in ms for internal and external switch
+#define GPIO_INT_SW_DBNC 50
+#define GPIO_EXT_SW_DBNC 50
 
 uint32_t gpio_sw_activated();
 
