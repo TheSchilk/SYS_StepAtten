@@ -39,7 +39,7 @@ If the remote features a switch, it should short Sense to GND.
 
 ## Riser Board
 Design files for Connector Riser board:
-https://github.com/TheSchilk/3.5mm_RiserPCB/releases/tag/v0.0
+https://github.com/TheSchilk/3.5mm_RiserPCB/releases/tag/v0.1
 
 ## Switch Selection
 
