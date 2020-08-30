@@ -15,6 +15,7 @@
 #include "gpio.h"
 #include "adc.h"
 #include "systick.h"
+#include "flash.h"
 
 // The number of inputs
 #define INPUT_COUNT 4

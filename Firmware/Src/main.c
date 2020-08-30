@@ -5,11 +5,10 @@ int main(void)
 	// determine UI mode from config jumper position
 	static const UI_MODE_T config_ui_select[INPUT_COUNT] = {mode_cycle, mode_cycle_toggle, mode_select, mode_cycle};
 
-	// TODO Save State to Flash
-	// TODO poti dbnc?
 	// TODO external ctrl
 
-	uint32_t current_input = 0;
+	// Get previously selected input from flash
+	uint32_t current_input = flash_read_state();
 
 	systick_init(); // Configure the SysTsick
   	gpio_init();    // Configre all GPIOs
@@ -22,6 +21,7 @@ int main(void)
 
 	while(1){
 		ui_update(ui_mode, &current_input);
+		flash_update_state(current_input);
 		systick_dlyms(100);
 	}
 }

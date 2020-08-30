@@ -36,8 +36,9 @@ _Min_Stack_Size = 0x400;	/* required amount of stack */
 /* Memories definition */
 MEMORY
 {
-  RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 4K
-  ROM    (rx)    : ORIGIN = 0x8000000,   LENGTH = 32K
+  RAM     (xrw)    : ORIGIN = 0x20000000,                    LENGTH = 4K
+  ROM     (rx)     : ORIGIN = 0x8000000,                     LENGTH = 31K
+  ROM_USR (rx)     : ORIGIN = ORIGIN(ROM)+LENGTH(ROM),       LENGTH = 1K
 }
 
 /* Sections */
@@ -119,7 +120,7 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
     . = ALIGN(4);
   } >ROM
-
+  
   /* Used by the startup to initialize data */
   _sidata = LOADADDR(.data);
 

@@ -74,6 +74,11 @@ void ui_cycle(uint32_t* current_input, uint32_t did_activate){
 
 		// Turn on LED
 		gpio_leds(input_led_lookup[*current_input], leds_decay, LED_DURATION_MS);
+
+		// Reset the flash timeout
+		// This way, if there are no more input changes for some time
+		// the input change will be saved in flash.
+		flash_reset_timeout();
 	}
 
 	if(mute_count != 0){
@@ -120,8 +125,14 @@ void ui_select(uint32_t* current_input){
 
 		// Once the switch is released, go either to normal or safety mode
 		if(gpio_sw_state() == 0){
+			// Select current input
 			*current_input = selected_input;
 			gpio_set_select(input_relay_lookup[selected_input]);
+
+			// Reset the flash timeout
+			// This way, if there are no more input changes for some time
+			// the input change will be saved in flash.
+			flash_reset_timeout();
 
 			if((pot_postion >> 5) == 0){
 				// Safe to go back to normal mode
