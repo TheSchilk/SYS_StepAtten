@@ -33,9 +33,12 @@
  */
 
 
+
 #include "flash.h"
 #include "sys_stepatten.h"
 #include "stm32f0xx.h"
+
+extern uint32_t input_led_lookup[];
 
 volatile uint32_t flash_timeout = 0;
 uint32_t current_input = 0;
@@ -113,6 +116,8 @@ void flash_attempt_write(){
 
 		// Write the input to flash
 		flash_writehw((uint32_t) &flashsection_hw[last_index], (uint16_t) current_input);
+
+		gpio_leds(input_led_lookup[current_input], leds_decay, 800);
 	}
 }
 
