@@ -32,7 +32,8 @@ void ui_setup(){
 void ui_update(){
 	// Update attenuator position
 	uint32_t pot_postion = adc_getPotVal();
-	gpio_set_atten(pot_postion >> 5);
+	uint32_t atten_position = pot_postion >> 5;
+	gpio_set_atten(atten_position);
 
 	if(gpio_sw_activated()){
 		// Mute and timeout
@@ -50,7 +51,7 @@ void ui_update(){
 		flash_inputchange(input);
 	}
 
-	if(mute_count != 0){
+	if(mute_count != 0 || atten_position == 0){
 		// If we are timed-out, mute
 		gpio_set_mute(1);
 	} else {
