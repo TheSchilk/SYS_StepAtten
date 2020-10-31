@@ -4,7 +4,7 @@
 
 A 127 Step Relay Step-Attenuator and 4-way input switcher designed to fit into a [Schiit SYS](https://www.schiit.com/products/sys) enclosure.
 
-![PCB Render](Doc/pcb_render.jpg)
+![PCB Render](Doc/pcb_render.png)
 
 ## Specifications
 
