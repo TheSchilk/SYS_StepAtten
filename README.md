@@ -4,10 +4,7 @@
 
 A 127 Step Relay Step-Attenuator and 4-way input switcher designed to fit into a [Schiit SYS](https://www.schiit.com/products/sys) enclosure.
 
-![PCB Render](https://raw.githubusercontent.com/TheSchilk/SYS_StepAtten/master/Doc/pcb_render.jpg)
-
-## Status
-WIP
+![PCB Render](Doc/pcb_render.jpg)
 
 ## Specifications
 
@@ -38,8 +35,7 @@ A 10K resistor has to be placed between GND and Sense for the remote to be detec
 If the remote features a switch, it should short Sense to GND.
 
 ## Riser Board
-Design files for Connector Riser board:
-https://github.com/TheSchilk/3.5mm_RiserPCB/releases/tag/v0.1
+Design files for the 3.5mm Connector Riser board [can be found here](https://github.com/TheSchilk/3.5mm_RiserPCB/releases/tag/v0.1).
 
 ## Switch Selection
 
@@ -50,12 +46,15 @@ The momentary switch is probably the better choice, but just in case
 one wants to harvest as many parts as possible from an original SYS,
 both are supported by the firmware.
 
-The firmware supports both kinds of switches, and the internal jumper
-CFG1 is used to indicate which kind is installed.
+The internal Jumper CFG1 is used to indicate which kind is installed.
 
 |           *Switch*          | *CFG1 Setting* |
 |:---------------------------:|:--------------:|
 | Momentary (ALPS SPUN190900) |        0       |
 |   Toggle (ALPS SPUN191400)  |        1       |
 
-Note that this setting is only updated during powerup.
+Note that the unit has to be turned off and on again for this setting 
+to take effect.
+
+## Schematics, Gerbers, BOMs, ...
+See [Github Releases](https://github.com/TheSchilk/SYS_StepAtten/releases).
