@@ -1,2 +1,10 @@
 # Ignore HTML BOMs in Github's Language Stats
-*.html linguist-detectable
+*.html linguist-detectable=false
+
+# Ignore STM32 HAL/CMSIS usw in Github's Language Stats:
+Firmware/Lib/** linguist-vendored
+
+# This is a C project...
+*.h linguist-language=C
+
+
